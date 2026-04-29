@@ -1,5 +1,6 @@
 import socket as stk
 import threading
+import time
 
 HOST = '127.0.0.1'
 PORT = 8080
@@ -35,3 +36,5 @@ threading.Thread(target=receive_message, args=(s,), daemon=True).start()
 
 # Step 4: Send Message
 threading.Thread(target=send_message, args=(s,), daemon=True).start()
+while True:
+    time.sleep(1)

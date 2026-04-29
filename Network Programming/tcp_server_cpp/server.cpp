@@ -1,9 +1,9 @@
 #include <iostream>
-#include <sys/socket.h> // socket, bind, listen, accept, send, recv
-#include <netinet/in.h> // struct sockaddr_in, INADDR_ANY, htons
-#include <arpa/inet.h>  // inet_ntop
-#include <unistd.h>     // close
-#include <cstring>      // memset, strlen
+#include <sys/socket.h> 
+#include <netinet/in.h> 
+#include <arpa/inet.h>  
+#include <unistd.h>     
+#include <cstring>      
 #include <errno.h>
 #include <string>
 
@@ -13,7 +13,7 @@
 int main()
 {
 
-    // Step 1: Create socket and return an integer file descriptor
+    // Step 1: Create socket
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd < 0)
     {
@@ -21,11 +21,11 @@ int main()
         return 1;
     }
 
-    // Step 2: setsockopt(): Enable SO_REUSEADDR to prevent 'Address already in use' errors on server restart.
+    // Step 2: setsockopt(): using this we can enable SO_REUSEADDR to prevent 'Address already in use' errors on server restart.
     int opt = 1;
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)); // Using &opt because setsockopt is designed to recieve a port number
 
-    // Step 3: Bind: Attach the socket to an address and port. The OS now routes incoming packets to our socket.
+    // Step 3: Bind: Attach the socket to an address and port.
     struct sockaddr_in serverAddress;
     memset(&serverAddress, 0, sizeof(serverAddress));
 
@@ -39,7 +39,7 @@ int main()
         return 1;
     }
 
-    // Step 4: Listen: Put the socket in "waiting mode" to hear incoming calls and set up a queue (waiting room) for them.
+    // Step 4: Listen: Put the socket in waiting mode to listen to any available devices to set up a queue for them.
     if (listen(server_fd, 10) < 0)
     {
         std::cerr << "Listen Error\n";
