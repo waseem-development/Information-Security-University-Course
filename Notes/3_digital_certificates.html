@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Digital Certificates, CAs & PKI — Exam Study Guide</title>
+    <style>
+      :root {
+        --ink: #1b2430;
+        --paper: #f6f4ee;
+        --panel: #ffffff;
+        --seal-red: #a6392b;
+        --seal-gold: #c99a3d;
+        --line: #d8d2c2;
+        --accent: #2f5d5a;
+        --muted: #6b6459;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        line-height: 1.6;
+        padding: 0 0 80px 0;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* header / wax seal banner */
+      header.hero {
+        background: linear-gradient(180deg, var(--ink), #232d3a);
+        color: #f1ede2;
+        padding: 46px 28px 54px;
+        position: relative;
+        overflow: hidden;
+      }
+      header.hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 40px
+        );
+      }
+      .hero-inner {
+        max-width: 880px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .eyebrow {
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12px;
+        color: #c9b98a;
+        margin-bottom: 14px;
+      }
+      h1.title {
+        font-size: 42px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+      .hero-sub {
+        color: #c7c2b4;
+        font-size: 17px;
+        max-width: 600px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      .seal {
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #d9ac54,
+          var(--seal-gold) 60%,
+          #93711f 100%
+        );
+        box-shadow:
+          0 8px 18px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 3px rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3a2a06;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-align: center;
+      }
+
+      nav.toc {
+        background: var(--panel);
+        margin: -30px 28px 40px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 20px 24px;
+        max-width: 824px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      nav.toc h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        margin: 0 0 10px 0;
+        font-weight: 700;
+      }
+      nav.toc ol {
+        margin: 0;
+        padding-left: 20px;
+        columns: 2;
+        column-gap: 30px;
+        font-size: 14.5px;
+      }
+      nav.toc li {
+        margin-bottom: 6px;
+      }
+      nav.toc a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      nav.toc a:hover {
+        text-decoration: underline;
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        margin: 0 0 26px 0;
+        padding: 30px 34px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      section h2 {
+        font-size: 26px;
+        margin: 0 0 4px 0;
+        color: var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      section h2 .num {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13px;
+        color: var(--seal-red);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      .tag {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 0 0 18px 0;
+        font-style: italic;
+      }
+
+      .analogy {
+        background: #f1ede1;
+        border-left: 4px solid var(--seal-gold);
+        padding: 14px 18px;
+        border-radius: 2px;
+        margin: 16px 0;
+        font-size: 15.5px;
+      }
+      .analogy b {
+        color: var(--seal-red);
+      }
+
+      .keypoints {
+        background: #eef2ee;
+        border: 1px dashed var(--accent);
+        border-radius: 4px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .keypoints h4 {
+        margin: 0 0 8px 0;
+        color: var(--accent);
+        font-size: 12.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .keypoints ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .keypoints li {
+        margin-bottom: 5px;
+      }
+
+      .exam {
+        background: #2f2622;
+        color: #f4ecd8;
+        border-radius: 4px;
+        padding: 14px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      .exam b {
+        color: var(--seal-gold);
+      }
+
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13.5px;
+      }
+      .flow .box {
+        background: #fff;
+        border: 1.5px solid var(--ink);
+        border-radius: 4px;
+        padding: 10px 14px;
+        min-width: 120px;
+        text-align: center;
+      }
+      .flow .arrow {
+        font-size: 18px;
+        color: var(--seal-red);
+      }
+      .flow .box.bad {
+        border-color: var(--seal-red);
+        background: #fbeceb;
+      }
+      .flow .box.good {
+        border-color: var(--accent);
+        background: #eaf1ee;
+      }
+
+      table.compare {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      table.compare th {
+        background: var(--ink);
+        color: #f4ecd8;
+        text-align: left;
+        padding: 9px 12px;
+      }
+      table.compare td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      table.compare tr:nth-child(even) td {
+        background: #faf8f2;
+      }
+
+      .steps {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0;
+      }
+      .steps li {
+        counter-increment: step;
+        position: relative;
+        padding: 8px 0 8px 44px;
+        border-bottom: 1px solid var(--line);
+        font-size: 15px;
+      }
+      .steps li:last-child {
+        border-bottom: none;
+      }
+      .steps li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 28px;
+        height: 28px;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .recap {
+        background: linear-gradient(180deg, #fbf7ec, #f4ecd8);
+        border: 1px solid var(--seal-gold);
+        border-radius: 4px;
+        padding: 22px 26px;
+        font-size: 15px;
+      }
+      .recap h2 {
+        color: var(--seal-red);
+      }
+
+      .quiz {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .quiz .q {
+        font-weight: 700;
+        margin-top: 14px;
+      }
+      .quiz .a {
+        color: var(--accent);
+        margin: 4px 0 0 0;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        margin-top: 20px;
+      }
+
+      code,
+      .kv {
+        font-family: "SFMono-Regular", Consolas, monospace;
+        background: #eee8d8;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 640px) {
+        h1.title {
+          font-size: 30px;
+        }
+        section {
+          padding: 22px 20px;
+        }
+        nav.toc ol {
+          columns: 1;
+        }
+        .seal {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">InfoSec Exam Prep</div>
+        <h1 class="title">Digital Certificates & PKI</h1>
+        <p class="hero-sub">
+          The plain-English version: how the internet proves "yes, this really
+          is who it says it is" — and everything that can go wrong along the
+          way.
+        </p>
+        <div class="seal">TRUSTED<br />THIRD<br />PARTY</div>
+      </div>
+    </header>
+<br><br><br>
+    <div class="wrap">
+      <nav class="toc">
+        <h2>Jump to a section</h2>
+        <ol>
+          <li>
+            <a href="#deception">1. The Core Problem — Public Key Deception</a>
+          </li>
+          <li><a href="#certs">2. Digital Certificates</a></li>
+          <li><a href="#ca">3. Certificate Authorities</a></li>
+          <li><a href="#crl">4. Revocation & CRLs</a></li>
+          <li><a href="#pki">5. Public Key Infrastructure (PKI)</a></li>
+          <li><a href="#iss">6. Integrated Security Systems (ISS)</a></li>
+          <li><a href="#ssl">7. SSL / TLS</a></li>
+          <li><a href="#recap">8. One-Page Recap + Self-Test</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1 -->
+      <section id="deception">
+        <h2>
+          <span class="num">01</span> The Core Problem: Public Key Deception
+        </h2>
+        <p class="tag">Why we need any of this in the first place</p>
+
+        <p>
+          Public key encryption is great: everyone has a
+          <b>public key</b> (shareable) and a <b>private key</b> (secret). The
+          catch is trust — how do you know the public key you received actually
+          belongs to the person you think it does?
+        </p>
+
+        <div class="analogy">
+          <b>Think of it like this:</b> Someone calls you pretending to be your
+          bank and gives you a "callback number" — but it's actually their own
+          number, not the bank's. If you call it back to "verify," you're really
+          just talking to the impostor again. The number itself proved nothing,
+          because it came from the same untrusted source.
+        </div>
+
+        <div class="flow">
+          <div class="box bad">Impostor</div>
+          <div class="arrow">→</div>
+          <div class="box">"Here's the<br />real party's<br />public key"</div>
+          <div class="arrow">→</div>
+          <div class="box bad">Verifier<br />(fooled)</div>
+        </div>
+
+        <p>If the verifier believes it, the impostor can now:</p>
+        <div class="keypoints">
+          <h4>What the impostor gains</h4>
+          <ul>
+            <li>
+              Pass any public-key <b>authentication</b> check (their private key
+              matches the "public key" you accepted)
+            </li>
+            <li>
+              <b>Decrypt</b> any messages the verifier encrypts and sends back,
+              since they were encrypted with the impostor's public key
+            </li>
+          </ul>
+        </div>
+
+        <div class="exam">
+          <b>The moral (this is basically the whole point of the topic):</b>
+          Public key crypto only works for privacy, authentication, and
+          integrity if the verifier gets the true party's public key
+          <i>independently</i> — from a <b>trusted third party</b>, not from the
+          applicant itself.
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section id="certs">
+        <h2><span class="num">02</span> Digital Certificates</h2>
+        <p class="tag">The fix for public key deception</p>
+
+        <p>
+          A digital certificate is basically an ID card for a public key. It's a
+          small file that says:
+        </p>
+
+        <div class="analogy">
+          "I, the Certificate Authority, have checked that <b>this name</b> owns
+          <b>this public key</b>. Signed, sealed, dated."
+        </div>
+
+        <div class="keypoints">
+          <h4>What's inside / what it does</h4>
+          <ul>
+            <li>
+              Binds a <b>name</b> to a <b>public key</b> (a name–public key
+              pair)
+            </li>
+            <li>
+              This binding is what prevents public key deception — the key
+              doesn't come from the applicant, it comes bundled with a third
+              party's stamp of approval
+            </li>
+            <li>
+              The format/fields are standardized by the
+              <b>ITU-T X.509</b> standard (so every system reads certificates
+              the same way)
+            </li>
+            <li>
+              The whole certificate is <b>digitally signed</b> using the CA's
+              own private key — this is what makes it tamper-proof: if an
+              impostor edited the name field, the signature would no longer
+              match, and the forgery would be obvious
+            </li>
+          </ul>
+        </div>
+
+        <div class="exam">
+          <b>Common exam trap:</b> "A digital certificate alone provides
+          authentication." — <b>FALSE.</b> A certificate only proves who owns a
+          public key. On its own it does NOT check whether that certificate has
+          since been revoked. You still need a CRL check (next section) for real
+          authentication.
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section id="ca">
+        <h2><span class="num">03</span> Certificate Authorities (CAs)</h2>
+        <p class="tag">Who actually issues the ID card</p>
+
+        <p>
+          A <b>Certificate Authority</b> is the trusted third party that
+          verifies identity and issues (signs) digital certificates.
+        </p>
+
+        <div class="flow">
+          <div class="box">Applicant's<br />identity + public key</div>
+          <div class="arrow">→</div>
+          <div class="box good">
+            Certificate<br />Authority<br />(verifies + signs)
+          </div>
+          <div class="arrow">→</div>
+          <div class="box">Digital<br />Certificate</div>
+          <div class="arrow">→</div>
+          <div class="box">Authenticated<br />Party</div>
+        </div>
+
+        <div class="keypoints">
+          <h4>Important caveats</h4>
+          <ul>
+            <li>
+              CAs are <b>not regulated</b> — anyone could technically set one up
+            </li>
+            <li>
+              So you must only trust CAs you actually trust (browsers/OSs ship
+              with a pre-approved trusted CA list)
+            </li>
+            <li>
+              A <b>company can be its own CA</b> just for internal use — e.g.
+              issuing certificates to its own employees, servers, and devices
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section id="crl">
+        <h2><span class="num">04</span> Revocation & the CRL</h2>
+        <p class="tag">What happens when a certificate goes bad early</p>
+
+        <p>
+          Certificates have an expiration date, but sometimes a CA needs to kill
+          one <i>before</i> that date — e.g. an employee leaves the company, or
+          a private key gets stolen/compromised.
+        </p>
+
+        <div class="steps">
+          <li>
+            The CA puts the certificate's ID number on its
+            <b>Certificate Revocation List (CRL)</b>
+          </li>
+          <li>
+            Anytime a verifier receives a digital certificate, it must ask the
+            CA: "is this one on the CRL?"
+          </li>
+          <li>
+            The CA responds: <span class="kv">OK</span> or
+            <span class="kv">Revoked</span>
+          </li>
+        </div>
+
+        <div class="exam">
+          <b>Exam-critical line straight from the slides:</b> "Without the CRL
+          check, digital certificates do NOT support authentication." Memorize
+          this — a certificate you never checked against the CRL could belong to
+          someone who was fired/compromised yesterday.
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section id="pki">
+        <h2><span class="num">05</span> Public Key Infrastructure (PKI)</h2>
+        <p class="tag">The whole system running in the background</p>
+
+        <p>
+          A <b>PKI</b> is the full setup an organization builds to automate all
+          of this — private key creation, certificate creation/distribution, and
+          CRL checking. The engine behind it is usually called a
+          <b>PKI Server</b>.
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Job of the PKI Server</th>
+            <th>What it actually does</th>
+          </tr>
+          <tr>
+            <td>Create key pairs</td>
+            <td>Generates public/private key pairs for applicants</td>
+          </tr>
+          <tr>
+            <td>Distribute private keys</td>
+            <td>
+              Sends the private key securely to the applicant — often it's
+              simply embedded inside software delivered to them
+            </td>
+          </tr>
+          <tr>
+            <td>Distribute certificates</td>
+            <td>Sends digital certificates to verifiers when needed</td>
+          </tr>
+          <tr>
+            <td>CRL checking</td>
+            <td>
+              Checks the revocation list before confirming a certificate is
+              valid, and answers "OK / Revoked" to verifiers
+            </td>
+          </tr>
+        </table>
+
+        <div class="analogy">
+          Think of a PKI Server as the DMV of the digital world: it issues your
+          "ID" (certificate), keeps a record of who it's given IDs to, and if
+          your ID gets reported stolen, it can flag it as invalid the moment
+          someone tries to check it.
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section id="iss">
+        <h2><span class="num">06</span> Integrated Security System (ISS)</h2>
+        <p class="tag">
+          What actually happens when two computers talk securely
+        </p>
+
+        <p>
+          This is the general 4-step "handshake" pattern almost every secure
+          system follows (your browser and a bank website, two apps, etc.) — the
+          software handles it automatically:
+        </p>
+
+        <div class="steps">
+          <li>
+            <b>Negotiate</b> — the two sides agree on which security
+            methods/algorithms to use
+          </li>
+          <li>
+            <b>Authenticate</b> — they confirm each other's identity (using
+            certificates, from Section 2–4!)
+          </li>
+          <li>
+            <b>Exchange a session key</b> — they agree on one shared
+            <b>symmetric</b> key just for this session (symmetric = fast, good
+            for bulk data — unlike public key crypto which is slower)
+          </li>
+          <li>
+            <b>Communicate securely</b> — every message after this point is
+            encrypted + signed using that session key, giving privacy,
+            authentication, and message integrity together
+          </li>
+        </div>
+
+        <div class="exam">
+          <b
+            >Why switch to a symmetric key at all if we already have
+            public/private keys?</b
+          >
+          Public key encryption is computationally expensive. Once identities
+          are confirmed, it's much faster to use one shared symmetric key for
+          the rest of the conversation.
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section id="ssl">
+        <h2>
+          <span class="num">07</span> SSL / TLS — the real-world example of an
+          ISS
+        </h2>
+        <p class="tag">The thing your browser is doing right now</p>
+
+        <table class="compare">
+          <tr>
+            <th>Term</th>
+            <th>Meaning</th>
+          </tr>
+          <tr>
+            <td>SSL</td>
+            <td>Secure Sockets Layer — originally built by Netscape</td>
+          </tr>
+          <tr>
+            <td>TLS</td>
+            <td>
+              Transport Layer Security — the modern, IETF-controlled rename of
+              SSL (people still just say "SSL" out of habit)
+            </td>
+          </tr>
+        </table>
+
+        <div class="keypoints">
+          <h4>Where it sits</h4>
+          <ul>
+            <li>
+              Runs below the Application Layer (browser, e-mail, etc.) but above
+              the Transport Layer
+            </li>
+            <li>
+              Not tied to one single app — it protects WWW traffic, e-mail, and
+              more, all the same way
+            </li>
+          </ul>
+        </div>
+
+        <p><b>SSL's version of the ISS handshake:</b></p>
+        <div class="steps">
+          <li>Browser and webserver negotiate security parameters</li>
+          <li>
+            The <b>webserver authenticates itself</b> (using its certificate) —
+            this is why you see the padlock icon
+          </li>
+          <li>
+            The browser <i>can</i> authenticate itself too, but in practice
+            rarely does
+          </li>
+          <li>
+            Browser picks a symmetric session key and sends it to the webserver
+          </li>
+          <li>
+            From here on, everything is signed + encrypted with that symmetric
+            key
+          </li>
+        </div>
+
+        <div class="exam">
+          <b>Known weaknesses to remember for the exam:</b>
+          <ul style="margin: 8px 0 0 18px">
+            <li>Relatively weak security compared to newer schemes</li>
+            <li>
+              Says nothing about whether the merchant's <i>server itself</i> is
+              actually secure
+            </li>
+            <li>Does NOT validate credit card numbers</li>
+            <li>
+              Considered a "good enough for now" stopgap, not a permanent
+              perfect solution
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          SSL/TLS is just one example of an ISS. Others include
+          <b>IPsec, PPP, and PPTP</b> — but every single one of them follows the
+          same 4-step pattern from Section 6: negotiate → authenticate →
+          exchange session key → communicate securely.
+        </p>
+      </section>
+
+      <!-- 8 recap -->
+      <section class="recap" id="recap">
+        <h2>One-Page Recap</h2>
+        <ul>
+          <li>
+            <b>Problem:</b> An impostor can hand out their own public key while
+            claiming it belongs to someone else (public key deception).
+          </li>
+          <li>
+            <b>Fix #1 — Digital Certificate:</b> A signed document binding a
+            name to a public key, following the X.509 standard.
+          </li>
+          <li>
+            <b>Fix #2 — Certificate Authority:</b> The trusted third party that
+            verifies identity and signs the certificate. Not regulated — only
+            trust CAs you actually trust.
+          </li>
+          <li>
+            <b>Fix #3 — CRL:</b> A list of revoked certificates. Without
+            checking it, a certificate proves nothing about current validity.
+          </li>
+          <li>
+            <b>PKI:</b> The whole automated system (PKI Server) that creates
+            keys, issues certificates, and handles CRL checks.
+          </li>
+          <li>
+            <b>ISS:</b> The general handshake — negotiate → authenticate →
+            exchange session key → communicate securely with a fast symmetric
+            key.
+          </li>
+          <li>
+            <b>SSL/TLS:</b> The most common real-world ISS. Secures browser
+            traffic (and more), but has known limits (doesn't secure the
+            merchant's server or validate card numbers).
+          </li>
+        </ul>
+
+        <div class="quiz">
+          <p class="q">
+            Q: Does a digital certificate by itself authenticate someone?
+          </p>
+          <p class="a">
+            A: No — you also need to check the CRL to make sure it hasn't been
+            revoked.
+          </p>
+          <p class="q">
+            Q: Why can't the applicant just hand their public key straight to
+            the verifier?
+          </p>
+          <p class="a">
+            A: Because the verifier has no way to independently confirm it
+            really belongs to that party — this is exactly the public key
+            deception attack.
+          </p>
+          <p class="q">Q: What does the CA sign the certificate with?</p>
+          <p class="a">
+            A: Its own private key — that's the digital signature that gives the
+            certificate message integrity.
+          </p>
+          <p class="q">
+            Q: In SSL, who usually authenticates — browser, server, or both?
+          </p>
+          <p class="a">
+            A: The webserver authenticates itself; the browser can, but rarely
+            does in practice.
+          </p>
+          <p class="q">
+            Q: Why switch to a symmetric session key after authentication?
+          </p>
+          <p class="a">
+            A: Public key encryption is slow; a shared symmetric key is much
+            faster for ongoing communication.
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        Good luck on your exam — you've got this. Review the recap box one more
+        time right before you walk in.
+      </footer>
+    </div>
+  </body>
+</html>
