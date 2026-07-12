@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Firewalls & Intrusion Detection — Exam Study Guide</title>
+    <style>
+      :root {
+        --ink: #1b2430;
+        --paper: #f6f4ee;
+        --panel: #ffffff;
+        --seal-red: #a6392b;
+        --seal-gold: #c99a3d;
+        --line: #d8d2c2;
+        --accent: #2f5d5a;
+        --muted: #6b6459;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        line-height: 1.6;
+        padding: 0 0 80px 0;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      header.hero {
+        background: linear-gradient(180deg, var(--ink), #232d3a);
+        color: #f1ede2;
+        padding: 46px 28px 54px;
+        position: relative;
+        overflow: hidden;
+      }
+      header.hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 40px
+        );
+      }
+      .hero-inner {
+        max-width: 880px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .eyebrow {
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12px;
+        color: #c9b98a;
+        margin-bottom: 14px;
+      }
+      h1.title {
+        font-size: 42px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+      .hero-sub {
+        color: #c7c2b4;
+        font-size: 17px;
+        max-width: 620px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      .brick {
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        width: 90px;
+        height: 90px;
+        border-radius: 6px;
+        background: linear-gradient(#c9843b, #a6602a);
+        background-size: 30px 15px;
+        box-shadow:
+          0 8px 18px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 3px rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3a2506;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+
+      nav.toc {
+        background: var(--panel);
+        margin: -30px 28px 40px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 20px 24px;
+        max-width: 824px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      nav.toc h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        margin: 0 0 10px 0;
+        font-weight: 700;
+      }
+      nav.toc ol {
+        margin: 0;
+        padding-left: 20px;
+        columns: 2;
+        column-gap: 30px;
+        font-size: 14.5px;
+      }
+      nav.toc li {
+        margin-bottom: 6px;
+      }
+      nav.toc a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      nav.toc a:hover {
+        text-decoration: underline;
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        margin: 0 0 26px 0;
+        padding: 30px 34px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      section h2 {
+        font-size: 26px;
+        margin: 0 0 4px 0;
+        color: var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      section h2 .num {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13px;
+        color: var(--seal-red);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      .tag {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 0 0 18px 0;
+        font-style: italic;
+      }
+
+      .analogy {
+        background: #f1ede1;
+        border-left: 4px solid var(--seal-gold);
+        padding: 14px 18px;
+        border-radius: 2px;
+        margin: 16px 0;
+        font-size: 15.5px;
+      }
+      .analogy b {
+        color: var(--seal-red);
+      }
+
+      .keypoints {
+        background: #eef2ee;
+        border: 1px dashed var(--accent);
+        border-radius: 4px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .keypoints h4 {
+        margin: 0 0 8px 0;
+        color: var(--accent);
+        font-size: 12.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .keypoints ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .keypoints li {
+        margin-bottom: 5px;
+      }
+
+      .exam {
+        background: #2f2622;
+        color: #f4ecd8;
+        border-radius: 4px;
+        padding: 14px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      .exam b {
+        color: var(--seal-gold);
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 4px;
+        max-width: 220px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13px;
+      }
+      .stack .layer {
+        border: 1.5px solid var(--ink);
+        border-radius: 3px;
+        padding: 8px 12px;
+        background: #fff;
+        text-align: center;
+      }
+      .stack .layer.hit {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        font-weight: 700;
+      }
+
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13.5px;
+      }
+      .flow .box {
+        background: #fff;
+        border: 1.5px solid var(--ink);
+        border-radius: 4px;
+        padding: 10px 14px;
+        min-width: 110px;
+        text-align: center;
+      }
+      .flow .arrow {
+        font-size: 18px;
+        color: var(--seal-red);
+      }
+      .flow .box.bad {
+        border-color: var(--seal-red);
+        background: #fbeceb;
+      }
+      .flow .box.good {
+        border-color: var(--accent);
+        background: #eaf1ee;
+      }
+
+      table.compare {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13.5px;
+      }
+      table.compare th {
+        background: var(--ink);
+        color: #f4ecd8;
+        text-align: left;
+        padding: 8px 10px;
+      }
+      table.compare td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      table.compare tr:nth-child(even) td {
+        background: #faf8f2;
+      }
+
+      .steps {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0;
+      }
+      .steps li {
+        counter-increment: step;
+        position: relative;
+        padding: 8px 0 8px 44px;
+        border-bottom: 1px solid var(--line);
+        font-size: 15px;
+      }
+      .steps li:last-child {
+        border-bottom: none;
+      }
+      .steps li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 28px;
+        height: 28px;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .recap {
+        background: linear-gradient(180deg, #fbf7ec, #f4ecd8);
+        border: 1px solid var(--seal-gold);
+        border-radius: 4px;
+        padding: 22px 26px;
+        font-size: 15px;
+      }
+      .recap h2 {
+        color: var(--seal-red);
+      }
+
+      .quiz {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .quiz .q {
+        font-weight: 700;
+        margin-top: 14px;
+      }
+      .quiz .a {
+        color: var(--accent);
+        margin: 4px 0 0 0;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        margin-top: 20px;
+      }
+
+      code,
+      .kv {
+        font-family: "SFMono-Regular", Consolas, monospace;
+        background: #eee8d8;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 640px) {
+        h1.title {
+          font-size: 30px;
+        }
+        section {
+          padding: 22px 20px;
+        }
+        nav.toc ol {
+          columns: 1;
+        }
+        .brick {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">InfoSec Exam Prep</div>
+        <h1 class="title">Firewalls & Intrusion Detection</h1>
+        <p class="hero-sub">
+          The plain-English version: how networks decide what to let in, what to
+          block — and what to do when something sneaks past anyway.
+        </p>
+        <div class="brick">FIRE<br />WALL</div>
+      </div>
+    </header>
+    <br><br><br>
+    <div class="wrap">
+      <nav class="toc">
+        <h2>Jump to a section</h2>
+        <ol>
+          <li><a href="#basics">1. What a Firewall Actually Does</a></li>
+          <li><a href="#types">2. The Three Main Types of Firewall</a></li>
+          <li><a href="#packet">3. Packet Filters & ACLs</a></li>
+          <li><a href="#ackscan">4. Attack: TCP ACK Scan</a></li>
+          <li><a href="#stateful">5. Stateful Packet Filters</a></li>
+          <li><a href="#proxy">6. Application Proxies</a></li>
+          <li><a href="#firewalk">7. Attack: Firewalk</a></li>
+          <li>
+            <a href="#personal">8. Personal Firewalls & Defense in Depth</a>
+          </li>
+          <li><a href="#ids">9. Intrusion Detection Systems (IDS)</a></li>
+          <li><a href="#signature">10. Signature-Based Detection</a></li>
+          <li><a href="#anomaly">11. Anomaly-Based Detection</a></li>
+          <li><a href="#recap">12. One-Page Recap + Self-Test</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1 -->
+      <section id="basics">
+        <h2><span class="num">01</span> What a Firewall Actually Does</h2>
+        <p class="tag">The gatekeeper between your network and the world</p>
+
+        <p>
+          A firewall sits between the Internet and your internal network. Every
+          message going in or out has to pass by it first. Its job: decide what
+          gets let in, and/or what gets let out.
+        </p>
+
+        <div class="flow">
+          <div class="box bad">Internet</div>
+          <div class="arrow">⇄</div>
+          <div class="box good">Firewall</div>
+          <div class="arrow">⇄</div>
+          <div class="box">Internal<br />network</div>
+        </div>
+
+        <div class="analogy">
+          <b>Firewall as a secretary:</b> to meet an executive, you talk to the
+          secretary first, who decides if the meeting is reasonable and filters
+          out the rest. Want to meet the chair of the CS department? Some
+          filtering. Want to meet the President of the US? A <i>lot</i> of
+          filtering. Same firewall, same idea — the strictness of the rules just
+          depends on what's behind the door.
+        </div>
+
+        <div class="exam">
+          <b>One-line definition to memorize:</b> A firewall provides
+          <b>access control</b> for the network.
+        </div>
+
+        <p
+          style="
+            font-family: &quot;Helvetica Neue&quot;, Arial, sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+          "
+        >
+          Heads up: there's no standard, universally agreed terminology for
+          firewalls across the industry — different vendors/books use slightly
+          different names for the same ideas.
+        </p>
+      </section>
+
+      <!-- 2 -->
+      <section id="types">
+        <h2><span class="num">02</span> The Three Main Types of Firewall</h2>
+        <p class="tag">Same job, different layer of the network stack</p>
+
+        <p>
+          Each type of firewall looks at traffic from a different "altitude" —
+          the higher up the stack, the more it can see, but the slower it gets.
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Type</th>
+            <th>Works at</th>
+            <th>Sees</th>
+          </tr>
+          <tr>
+            <td>Packet filter</td>
+            <td>Network layer</td>
+            <td>IP addresses, ports, flags — headers only</td>
+          </tr>
+          <tr>
+            <td>Stateful packet filter</td>
+            <td>Transport layer</td>
+            <td>
+              Everything above, plus whether packets belong to an ongoing
+              connection
+            </td>
+          </tr>
+          <tr>
+            <td>Application proxy</td>
+            <td>Application layer</td>
+            <td>The actual data/content inside the packet</td>
+          </tr>
+        </table>
+
+        <p>
+          There's also a <b>Personal firewall</b> — not a new technique, just
+          any of the above three, scaled down for a single user or home network
+          (see Section 8).
+        </p>
+
+        <div class="exam">
+          <b>Exam trap:</b> "Packet filter" and "stateful packet filter" are NOT
+          the same thing — the word "stateful" specifically means it tracks
+          ongoing connections. Don't mix them up.
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section id="packet">
+        <h2><span class="num">03</span> Packet Filters & ACLs</h2>
+        <p class="tag">The simplest, fastest type of firewall</p>
+
+        <div class="stack">
+          <div class="layer">physical</div>
+          <div class="layer">link</div>
+          <div class="layer hit">network ← packet filter lives here</div>
+          <div class="layer">transport</div>
+          <div class="layer">application</div>
+        </div>
+
+        <p>
+          A packet filter looks only at the packet's header and decides
+          allow/deny based on:
+        </p>
+        <div class="keypoints">
+          <h4>What it can filter on</h4>
+          <ul>
+            <li>Source IP address / Destination IP address</li>
+            <li>Source port / Destination port</li>
+            <li>Flag bits (SYN, ACK, etc.)</li>
+            <li>Direction: egress (outgoing) or ingress (incoming)</li>
+          </ul>
+        </div>
+
+        <p>
+          Rules are written as an <b>Access Control List (ACL)</b> — note: a
+          different meaning of "ACL" than you may have seen elsewhere in the
+          course.
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Action</th>
+            <th>Source IP</th>
+            <th>Dest IP</th>
+            <th>Src Port</th>
+            <th>Dest Port</th>
+            <th>Protocol</th>
+            <th>Flags</th>
+          </tr>
+          <tr>
+            <td>Allow</td>
+            <td>Inside</td>
+            <td>Outside</td>
+            <td>Any</td>
+            <td>80</td>
+            <td>HTTP</td>
+            <td>Any</td>
+          </tr>
+          <tr>
+            <td>Allow</td>
+            <td>Outside</td>
+            <td>Inside</td>
+            <td>80</td>
+            <td>&gt;1023</td>
+            <td>HTTP</td>
+            <td>ACK</td>
+          </tr>
+          <tr>
+            <td>Deny</td>
+            <td>All</td>
+            <td>All</td>
+            <td>All</td>
+            <td>All</td>
+            <td>All</td>
+            <td>All</td>
+          </tr>
+        </table>
+        <p
+          style="
+            font-size: 13px;
+            color: var(--muted);
+            font-family: &quot;Helvetica Neue&quot;, Arial, sans-serif;
+          "
+        >
+          Reading this ACL: rule 1 lets internal users make outbound web
+          requests; rule 2 lets the web's responses back in
+          <i>only if the ACK flag is set</i> (meaning it should be part of a
+          connection someone inside already started); rule 3 blocks everything
+          else by default.
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Advantage</th>
+            <th>Disadvantages</th>
+          </tr>
+          <tr>
+            <td>Speed</td>
+            <td>
+              No state (can't tell if a packet is really part of an existing
+              conversation) · Can't see full TCP connections · Completely blind
+              to application data
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 4 -->
+      <section id="ackscan">
+        <h2><span class="num">04</span> Attack: TCP ACK Scan</h2>
+        <p class="tag">
+          Exploiting the fact that packet filters have no memory
+        </p>
+
+        <p>
+          Normally a TCP connection starts with a 3-way handshake (SYN → SYN-ACK
+          → ACK). An attacker skips all that and just sends a packet with the
+          <b>ACK bit already set</b> — this violates the protocol, but a plain
+          packet filter has no state, so it can't tell the difference between
+          "this is part of an ongoing connection" and "this just showed up out
+          of nowhere."
+        </p>
+
+        <div class="flow">
+          <div class="box bad">Trudy<br />(attacker)</div>
+          <div class="arrow">→</div>
+          <div class="box">ACK to<br />port 1207</div>
+          <div class="arrow">✕</div>
+        </div>
+        <div class="flow">
+          <div class="box bad">Trudy</div>
+          <div class="arrow">→</div>
+          <div class="box good">ACK to<br />port 1209</div>
+          <div class="arrow">→</div>
+          <div class="box">Internal<br />network</div>
+          <div class="arrow">← RST</div>
+        </div>
+
+        <div class="steps">
+          <li>
+            Attacker sends fake ACK packets to different ports, one at a time
+          </li>
+          <li>
+            Ports where the firewall blocks the packet → no response comes back
+          </li>
+          <li>
+            Ports where the firewall lets it through (because it looks like an
+            ongoing connection) → the internal host replies with an
+            <b>RST</b> since it never opened that connection
+          </li>
+          <li>
+            The attacker now knows exactly which ports are open through the
+            firewall — without ever needing a real connection
+          </li>
+        </div>
+
+        <div class="exam">
+          <b>Fix:</b> A <b>stateful packet filter</b> defeats this attack,
+          because it actually tracks which connections are truly established — a
+          lone ACK with no matching handshake gets rejected instantly.
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section id="stateful">
+        <h2><span class="num">05</span> Stateful Packet Filter</h2>
+        <p class="tag">Packet filter + memory</p>
+
+        <div class="stack">
+          <div class="layer">physical</div>
+          <div class="layer">link</div>
+          <div class="layer">network</div>
+          <div class="layer hit">transport ← stateful filter lives here</div>
+          <div class="layer">application</div>
+        </div>
+
+        <p>
+          Same idea as a packet filter, but it now <b>remembers</b> ongoing TCP
+          connections and their flag history — and it can even track
+          connectionless things like UDP-based DNS requests, matching a reply to
+          the request that caused it.
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Advantages</th>
+            <th>Disadvantages</th>
+          </tr>
+          <tr>
+            <td>
+              Does everything a packet filter does, plus tracks ongoing
+              connections (defeats ACK scans)
+            </td>
+            <td>
+              Still can't see application-layer data · Slower than a plain
+              packet filter
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 6 -->
+      <section id="proxy">
+        <h2><span class="num">06</span> Application Proxy</h2>
+        <p class="tag">The firewall that actually reads the mail</p>
+
+        <div class="stack">
+          <div class="layer">physical</div>
+          <div class="layer">link</div>
+          <div class="layer">network</div>
+          <div class="layer">transport</div>
+          <div class="layer hit">application ← proxy lives here</div>
+        </div>
+
+        <div class="analogy">
+          A <b>proxy</b> is something that acts on your behalf. An application
+          proxy takes incoming data, fully inspects it, and only
+          <i>then</i> builds a brand-new packet to forward inward — nothing from
+          the original packet passes through untouched.
+        </div>
+
+        <table class="compare">
+          <tr>
+            <th>Advantages</th>
+            <th>Disadvantages</th>
+          </tr>
+          <tr>
+            <td>
+              Complete view of the connection and the actual application data ·
+              Can filter bad content at the application layer (viruses,
+              malicious Word macros) · Deep packet inspection, not just header
+              inspection
+            </td>
+            <td>
+              Slower (has to build a fresh packet) · Single point of failure
+            </td>
+          </tr>
+        </table>
+
+        <div class="exam">
+          <b>Key exam point:</b> Because the proxy builds a brand-new packet, an
+          attacker can't sneak raw packets through directly — they have to
+          convince the <i>proxy itself</i> to forward the message. This blocks
+          some attacks a stateful filter can't stop (see Firewalk, next).
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section id="firewalk">
+        <h2><span class="num">07</span> Attack: Firewalk</h2>
+        <p class="tag">Using TTL tricks to map what's open behind a firewall</p>
+
+        <p>
+          Firewalk is a scanning tool. The attacker already knows the firewall's
+          IP and the IP of one system just behind it.
+        </p>
+
+        <div class="steps">
+          <li>
+            Attacker sets the packet's <b>TTL</b> to exactly one more hop than
+            the distance to the firewall, and picks a destination port to test
+          </li>
+          <li>If the firewall <b>blocks</b> that port → nothing comes back</li>
+          <li>
+            If the firewall <b>allows</b> that port through → the packet dies
+            one hop past the firewall (TTL hits 0) and that router sends back a
+            <b>"time exceeded"</b> error — which tells the attacker the port is
+            open
+          </li>
+        </div>
+
+        <div class="flow">
+          <div class="box bad">Trudy</div>
+          <div class="arrow">→</div>
+          <div class="box good">Port 12345,<br />TTL=4</div>
+          <div class="arrow">→</div>
+          <div class="box">Router past<br />firewall</div>
+          <div class="arrow">← Time exceeded</div>
+        </div>
+
+        <div class="exam">
+          <b>Critical exam distinction:</b> Firewalk works against a
+          <b>packet filter</b> (which just forwards the original packet, TTL and
+          all) but does <b>NOT</b> work against an <b>application proxy</b> —
+          because the proxy builds a completely new packet with a fresh TTL,
+          destroying the attacker's timing trick.
+        </div>
+      </section>
+
+      <!-- 8 -->
+      <section id="personal">
+        <h2>
+          <span class="num">08</span> Personal Firewalls & Defense in Depth
+        </h2>
+        <p class="tag">Layering firewalls instead of trusting just one</p>
+
+        <p>
+          A <b>personal firewall</b> protects a single user or home network.
+          It's not a new technology — it can use any of the same three methods
+          (packet filter, stateful filter, or application proxy), just scaled
+          down.
+        </p>
+
+        <div class="analogy">
+          <b>Defense in depth</b> means never relying on a single firewall. A
+          typical layered architecture: Internet → packet filter → DMZ
+          (public-facing servers like WWW, FTP, DNS live here, somewhat
+          isolated) → application proxy → intranet, where each internal machine
+          may also run its own personal firewall.
+        </div>
+
+        <div class="keypoints">
+          <h4>Why a DMZ?</h4>
+          <ul>
+            <li>
+              Public servers (web, FTP, DNS) need to be reachable from the
+              Internet, but you don't want them sitting directly on your trusted
+              intranet
+            </li>
+            <li>
+              The DMZ is a middle zone: reachable from outside, but isolated
+              from the fully trusted internal network by another firewall layer
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 9 -->
+      <section id="ids">
+        <h2><span class="num">09</span> Intrusion Detection Systems (IDS)</h2>
+        <p class="tag">What to do when the firewall isn't enough</p>
+
+        <table class="compare">
+          <tr>
+            <th>Concept</th>
+            <th>Meaning</th>
+          </tr>
+          <tr>
+            <td><b>Intrusion prevention</b></td>
+            <td>
+              The traditional focus of security — keep the bad guy out entirely.
+              Authentication, firewalls, and antivirus are all forms of this.
+              (Like locking your car door.)
+            </td>
+          </tr>
+          <tr>
+            <td><b>Intrusion detection</b></td>
+            <td>
+              Accepts that, despite prevention, someone will sometimes get in —
+              so instead it watches for unusual activity and raises an alarm.
+            </td>
+          </tr>
+        </table>
+
+        <div class="keypoints">
+          <h4>Who's the intruder, and what do they do?</h4>
+          <ul>
+            <li>
+              Could be an outsider who got past the firewall, or an evil insider
+              already inside
+            </li>
+            <li>
+              They may launch well-known attacks, variations on known attacks,
+              brand-new attacks, or even use your compromised system to attack
+              someone else
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          IDS grew out of simple log file analysis and remains a very active
+          research area. (Note: how to <i>respond</i> once an intrusion is
+          detected is a separate topic, not covered here.)
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>By approach</th>
+            <th>By architecture</th>
+          </tr>
+          <tr>
+            <td>Signature-based · Anomaly-based</td>
+            <td>Host-based · Network-based</td>
+          </tr>
+        </table>
+        <p
+          style="
+            font-size: 13px;
+            color: var(--muted);
+            font-family: &quot;Helvetica Neue&quot;, Arial, sans-serif;
+          "
+        >
+          Almost every real IDS product can be classified using this 2×2 grid —
+          no matter what the marketing brochure calls it.
+        </p>
+
+        <div class="keypoints">
+          <h4>Host-based vs. Network-based</h4>
+          <ul>
+            <li>
+              <b>Host-based:</b> watches activity on one machine — good for
+              catching buffer overflows, privilege escalation. Little/no view of
+              network traffic.
+            </li>
+            <li>
+              <b>Network-based:</b> watches traffic across the network — good
+              for catching denial-of-service, network probes, malformed packets.
+              Little/no view of what's happening inside a specific host.
+              (Overlaps somewhat with what a firewall does.) Many real
+              deployments run both.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 10 -->
+      <section id="signature">
+        <h2><span class="num">10</span> Signature-Based Detection</h2>
+        <p class="tag">Recognize the fingerprint of a known attack</p>
+
+        <div class="analogy">
+          <b>Example:</b> failed login attempts can indicate a password-cracking
+          attack. A signature rule might be: "N failed logins in M seconds →
+          warn of attack." Because the rule is specific, the admin knows exactly
+          what's suspected and can go verify (or dismiss it as a false alarm).
+        </div>
+
+        <div class="keypoints">
+          <h4>Tuning the signature</h4>
+          <ul>
+            <li>
+              N and M must be chosen carefully so false alarms aren't constant —
+              usually based on studying normal behavior
+            </li>
+            <li>
+              <b>Problem:</b> if the attacker knows the signature, they can just
+              try N−1 logins every M seconds to stay just under the radar —
+              signature detection then only <i>slows</i> the attacker, it
+              doesn't stop them
+            </li>
+            <li>
+              To be more robust, systems detect "almost-signatures" too (e.g.
+              "about N attempts in about M seconds") using statistics/heuristics
+              — but that risks raising the false-alarm rate if not done
+              carefully
+            </li>
+          </ul>
+        </div>
+
+        <table class="compare">
+          <tr>
+            <th>Advantages</th>
+            <th>Disadvantages</th>
+          </tr>
+          <tr>
+            <td>
+              Simple · Detects known attacks reliably · Tells you exactly which
+              attack was detected · Efficient with a reasonable number of
+              signatures
+            </td>
+            <td>
+              Signature files need constant updating · List of signatures can
+              grow huge · Only catches <i>known</i> attacks · A variation on a
+              known attack may slip through undetected
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 11 -->
+      <section id="anomaly">
+        <h2><span class="num">11</span> Anomaly-Based Detection</h2>
+        <p class="tag">Flagging "weird," not matching a known pattern</p>
+
+        <p>
+          Instead of matching known attack fingerprints, anomaly detection asks
+          two hard questions:
+          <b>what counts as "normal" for this system?</b> and
+          <b>how far from normal counts as abnormal?</b> Statistics is the tool
+          for both — the mean defines "normal," and the variance defines how
+          much wiggle room counts as still-normal.
+        </p>
+
+        <div class="exam">
+          <b>Big warning from the slides:</b> you must measure "normal" during
+          representative, attack-free behavior — if you accidentally build your
+          baseline while an attack is already happening, the attack itself
+          starts looking normal!
+        </div>
+
+        <div class="keypoints">
+          <h4>Statistical techniques used</h4>
+          <ul>
+            <li>
+              Bayesian statistics, Linear/Quadratic Discriminant Analysis
+              (LDA/QDA)
+            </li>
+            <li>Neural nets, hidden Markov models</li>
+            <li>
+              More exotic approaches: AI, even "artificial immune system" ideas
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          <b>Simple example — command sequences:</b> monitor three commands:
+          <span class="kv">open</span>, <span class="kv">read</span>,
+          <span class="kv">close</span>. If Alice normally produces the pairs
+          (open,read), (read,close), (close,open), (open,open), then a burst of
+          pairs <i>outside</i> that normal set signals possible unusual
+          activity.
+        </p>
+
+        <p>
+          <b>Adaptive example — file access rates:</b> the system keeps a
+          long-term average access rate <span class="kv">H</span> per file,
+          compares it to the recently observed rate <span class="kv">A</span>,
+          and computes a distance score (sum of squared differences). If the
+          score stays below a threshold, it's called normal — and the long-term
+          average is nudged toward the recent behavior each time (e.g.
+          <span class="kv">H = 0.2A + 0.8H</span>), so the system's idea of
+          "normal" keeps adapting.
+        </p>
+
+        <div class="exam">
+          <b>The catch — this is a favorite exam question:</b> because the
+          baseline adapts, an attacker (Trudy) who slowly and repeatedly nudges
+          behavior toward what she wants (e.g., always accessing one particular
+          file) can gradually convince the IDS that her activity <i>is</i> the
+          new normal. "Going slow" can let an attacker win.
+        </div>
+
+        <table class="compare">
+          <tr>
+            <th>Advantages</th>
+            <th>Disadvantages</th>
+          </tr>
+          <tr>
+            <td>
+              Chance of catching brand-new, never-seen-before attacks · Can be
+              more efficient (no giant signature database to check against)
+            </td>
+            <td>
+              Not reliable enough to use alone today — must pair with signature
+              detection · A flag only says "something's unusual," not what the
+              attack actually is · Vulnerable to the slow "boiling frog" style
+              attack above
+            </td>
+          </tr>
+        </table>
+
+        <p
+          style="
+            font-family: &quot;Helvetica Neue&quot;, Arial, sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+          "
+        >
+          A more sophisticated real-world system combining both anomaly and
+          signature detection is called <b>NIDES</b>. Even top security
+          researchers are split on how promising anomaly detection really is — a
+          well-known Defcon talk was literally titled "Why Anomaly-based IDS is
+          an Attacker's Best Friend."
+        </p>
+      </section>
+
+      <!-- 12 recap -->
+      <section class="recap" id="recap">
+        <h2>One-Page Recap</h2>
+        <ul>
+          <li>
+            <b>Firewall's job:</b> access control between the Internet and an
+            internal network — decide what's let in and/or out.
+          </li>
+          <li>
+            <b>Packet filter</b> (network layer): fast, checks headers only
+            (IP/port/flags), no memory of connections.
+          </li>
+          <li>
+            <b>TCP ACK scan</b> exploits a packet filter's lack of state — a
+            lone ACK sneaks through looking like part of an existing connection.
+          </li>
+          <li>
+            <b>Stateful packet filter</b> (transport layer): tracks real
+            connections, defeats ACK scans, but still can't see application
+            content.
+          </li>
+          <li>
+            <b>Application proxy</b> (application layer): rebuilds packets from
+            scratch after inspecting the actual data — slowest but most
+            thorough, and immune to TTL tricks like Firewalk.
+          </li>
+          <li>
+            <b>Firewalk</b> exploits TTL + "time exceeded" messages to map open
+            ports past a packet filter — doesn't work through an application
+            proxy.
+          </li>
+          <li>
+            <b>Defense in depth:</b> layer multiple firewall types (packet
+            filter → DMZ → application proxy → personal firewalls) instead of
+            trusting one.
+          </li>
+          <li>
+            <b>Intrusion prevention</b> (firewalls, auth, antivirus) tries to
+            keep attackers out; <b>intrusion detection (IDS)</b> assumes some
+            will get in and watches for unusual activity instead.
+          </li>
+          <li>
+            <b>Signature-based IDS:</b> matches known attack patterns — precise
+            but blind to new/varied attacks.
+          </li>
+          <li>
+            <b>Anomaly-based IDS:</b> flags statistical deviation from "normal"
+            — can catch new attacks, but is vague and can be slowly trained to
+            accept an attack as normal.
+          </li>
+        </ul>
+
+        <div class="quiz">
+          <p class="q">
+            Q: Why does a TCP ACK scan get through a plain packet filter but not
+            a stateful one?
+          </p>
+          <p class="a">
+            A: A plain packet filter has no memory of ongoing connections, so a
+            lone ACK packet looks legitimate. A stateful filter tracks real
+            handshakes and rejects ACKs that don't belong to one.
+          </p>
+          <p class="q">
+            Q: Why doesn't Firewalk work against an application proxy?
+          </p>
+          <p class="a">
+            A: The proxy builds an entirely new packet before forwarding it,
+            which resets the TTL — destroying the timing information the attack
+            relies on.
+          </p>
+          <p class="q">
+            Q: What's the main weakness of signature-based detection?
+          </p>
+          <p class="a">
+            A: It can only catch attacks matching a known signature — new
+            attacks or clever variations can slip through, and signature
+            databases must be constantly maintained.
+          </p>
+          <p class="q">
+            Q: What's the main weakness of anomaly-based detection?
+          </p>
+          <p class="a">
+            A: It only flags that something is unusual, without saying what the
+            attack is — and because "normal" adapts over time, a patient
+            attacker can slowly retrain the system to accept malicious behavior
+            as normal.
+          </p>
+          <p class="q">Q: What's a DMZ for?</p>
+          <p class="a">
+            A: A middle zone between the Internet and the trusted intranet, for
+            servers (web, FTP, DNS) that need to be publicly reachable without
+            sitting directly on the internal network.
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        Good luck on your exam — you've got this. Review the recap box one more
+        time right before you walk in.
+      </footer>
+    </div>
+  </body>
+</html>
