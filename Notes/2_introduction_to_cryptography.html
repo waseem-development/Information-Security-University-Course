@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Introduction to Cryptography — Exam Study Guide</title>
+    <style>
+      :root {
+        --ink: #1b2430;
+        --paper: #f6f4ee;
+        --panel: #ffffff;
+        --seal-red: #a6392b;
+        --seal-gold: #c99a3d;
+        --line: #d8d2c2;
+        --accent: #2f5d5a;
+        --muted: #6b6459;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        line-height: 1.6;
+        padding: 0 0 80px 0;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* header / wax seal banner */
+      header.hero {
+        background: linear-gradient(180deg, var(--ink), #232d3a);
+        color: #f1ede2;
+        padding: 46px 28px 54px;
+        position: relative;
+        overflow: hidden;
+      }
+      header.hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 40px
+        );
+      }
+      .hero-inner {
+        max-width: 880px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .eyebrow {
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12px;
+        color: #c9b98a;
+        margin-bottom: 14px;
+      }
+      h1.title {
+        font-size: 42px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+      .hero-sub {
+        color: #c7c2b4;
+        font-size: 17px;
+        max-width: 600px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      .seal {
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #d9ac54,
+          var(--seal-gold) 60%,
+          #93711f 100%
+        );
+        box-shadow:
+          0 8px 18px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 3px rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3a2a06;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-align: center;
+      }
+
+      nav.toc {
+        background: var(--panel);
+        margin: -30px 28px 40px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 20px 24px;
+        max-width: 824px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      nav.toc h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        margin: 0 0 10px 0;
+        font-weight: 700;
+      }
+      nav.toc ol {
+        margin: 0;
+        padding-left: 20px;
+        columns: 2;
+        column-gap: 30px;
+        font-size: 14.5px;
+      }
+      nav.toc li {
+        margin-bottom: 6px;
+      }
+      nav.toc a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      nav.toc a:hover {
+        text-decoration: underline;
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        margin: 0 0 26px 0;
+        padding: 30px 34px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      section h2 {
+        font-size: 26px;
+        margin: 0 0 4px 0;
+        color: var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      section h2 .num {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13px;
+        color: var(--seal-red);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      .tag {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 0 0 18px 0;
+        font-style: italic;
+      }
+
+      .analogy {
+        background: #f1ede1;
+        border-left: 4px solid var(--seal-gold);
+        padding: 14px 18px;
+        border-radius: 2px;
+        margin: 16px 0;
+        font-size: 15.5px;
+      }
+      .analogy b {
+        color: var(--seal-red);
+      }
+
+      .keypoints {
+        background: #eef2ee;
+        border: 1px dashed var(--accent);
+        border-radius: 4px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .keypoints h4 {
+        margin: 0 0 8px 0;
+        color: var(--accent);
+        font-size: 12.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .keypoints ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .keypoints li {
+        margin-bottom: 5px;
+      }
+
+      .exam {
+        background: #2f2622;
+        color: #f4ecd8;
+        border-radius: 4px;
+        padding: 14px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      .exam b {
+        color: var(--seal-gold);
+      }
+
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13.5px;
+      }
+      .flow .box {
+        background: #fff;
+        border: 1.5px solid var(--ink);
+        border-radius: 4px;
+        padding: 10px 14px;
+        min-width: 120px;
+        text-align: center;
+      }
+      .flow .arrow {
+        font-size: 18px;
+        color: var(--seal-red);
+      }
+      .flow .box.bad {
+        border-color: var(--seal-red);
+        background: #fbeceb;
+      }
+      .flow .box.good {
+        border-color: var(--accent);
+        background: #eaf1ee;
+      }
+
+      table.compare {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      table.compare th {
+        background: var(--ink);
+        color: #f4ecd8;
+        text-align: left;
+        padding: 9px 12px;
+      }
+      table.compare td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      table.compare tr:nth-child(even) td {
+        background: #faf8f2;
+      }
+
+      .steps {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0;
+      }
+      .steps li {
+        counter-increment: step;
+        position: relative;
+        padding: 8px 0 8px 44px;
+        border-bottom: 1px solid var(--line);
+        font-size: 15px;
+      }
+      .steps li:last-child {
+        border-bottom: none;
+      }
+      .steps li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 28px;
+        height: 28px;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .recap {
+        background: linear-gradient(180deg, #fbf7ec, #f4ecd8);
+        border: 1px solid var(--seal-gold);
+        border-radius: 4px;
+        padding: 22px 26px;
+        font-size: 15px;
+      }
+      .recap h2 {
+        color: var(--seal-red);
+      }
+
+      .quiz {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .quiz .q {
+        font-weight: 700;
+        margin-top: 14px;
+      }
+      .quiz .a {
+        color: var(--accent);
+        margin: 4px 0 0 0;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        margin-top: 20px;
+      }
+
+      code,
+      .kv {
+        font-family: "SFMono-Regular", Consolas, monospace;
+        background: #eee8d8;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 640px) {
+        h1.title {
+          font-size: 30px;
+        }
+        section {
+          padding: 22px 20px;
+        }
+        nav.toc ol {
+          columns: 1;
+        }
+        .seal {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">InfoSec Exam Prep</div>
+        <h1 class="title">Introduction to Cryptography</h1>
+        <p class="hero-sub">
+          The plain-English version: how we mangle information on purpose —
+          and why that's actually a good thing.
+        </p>
+        <div class="seal">κρυπτο<br />γραφη</div>
+      </div>
+    </header>
+<br><br><br>
+    <div class="wrap">
+      <nav class="toc">
+        <h2>Jump to a section</h2>
+        <ol>
+          <li><a href="#basics">1. What Is Cryptography?</a></li>
+          <li><a href="#breaking">2. Breaking an Encryption Scheme</a></li>
+          <li><a href="#types">3. Types of Cryptographic Functions</a></li>
+          <li><a href="#secret">4. Secret Key Cryptography</a></li>
+          <li><a href="#classical">5. Classical Ciphers & Frequency Analysis</a></li>
+          <li><a href="#public">6. Public Key Cryptography</a></li>
+          <li><a href="#hash">7. Hash Algorithms</a></li>
+          <li><a href="#recap">8. One-Page Recap + Self-Test</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1 -->
+      <section id="basics">
+        <h2><span class="num">01</span> What Is Cryptography?</h2>
+        <p class="tag">The art of secret writing</p>
+
+        <p>
+          The word literally comes from Greek: <i>krypto</i> (hidden) +
+          <i>graphe</i> (writing). The slide definition is worth memorizing
+          word-for-word because professors love quoting it back at you:
+        </p>
+
+        <div class="analogy">
+          <b>Definition:</b> "The art of mangling information into apparent
+          unintelligibility in a manner allowing a secret method of
+          unmangling."
+        </div>
+
+        <div class="flow">
+          <div class="box">plaintext</div>
+          <div class="arrow">→ encryption →</div>
+          <div class="box good">ciphertext</div>
+          <div class="arrow">→ decryption →</div>
+          <div class="box">plaintext</div>
+        </div>
+
+        <div class="keypoints">
+          <h4>The vocabulary you must know cold</h4>
+          <ul>
+            <li><b>Messages:</b> plaintext (readable) and ciphertext (mangled)</li>
+            <li>
+              <b>Ingredients:</b> an <b>algorithm</b> (the recipe/method) and
+              one or more <b>keys</b> (the secret value(s) plugged into the
+              recipe)
+            </li>
+            <li>
+              <b>Players:</b> the <i>cryptographer</i> invents clever
+              algorithms; the <i>cryptanalyst</i> tries to break them
+            </li>
+          </ul>
+        </div>
+
+        <div class="analogy">
+          <b>Think of it like a locked box:</b> the algorithm is the design of
+          the lock (everyone can see how the lock mechanism works), and the
+          key is the one physical piece that actually opens it. Knowing how
+          locks work in general doesn't let you open any specific one.
+        </div>
+
+        <div class="exam">
+          <b>Public algorithm, secret key — this is the whole point:</b> It's
+          perfectly fine — even expected — for the algorithm itself to be
+          public. What must stay secret is the key. "Sunlight is the best
+          disinfectant": public algorithms get scrutinized by thousands of
+          smart people, so weaknesses get found and fixed. A secret,
+          untested algorithm just hides its flaws instead of removing them.
+          An algorithm without the key does nothing to help unmangle the
+          information.
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section id="breaking">
+        <h2><span class="num">02</span> Breaking an Encryption Scheme</h2>
+        <p class="tag">How attackers actually attack, and why bigger keys matter</p>
+
+        <p>The slides describe three attack scenarios, ranked by how much the attacker has to work with:</p>
+
+        <table class="compare">
+          <tr>
+            <th>Attack type</th>
+            <th>What the attacker has</th>
+            <th>What they do with it</th>
+          </tr>
+          <tr>
+            <td>Ciphertext only</td>
+            <td>Just the scrambled message</td>
+            <td>Try every possible key, check which result is actually intelligible English (needs a long enough sample to tell gibberish from a real sentence)</td>
+          </tr>
+          <tr>
+            <td>Known plaintext</td>
+            <td>One or more (plaintext, ciphertext) pairs</td>
+            <td>Work backward to figure out the key or algorithm pattern</td>
+          </tr>
+          <tr>
+            <td>Chosen plaintext</td>
+            <td>The ability to get <i>any</i> plaintext encrypted on demand</td>
+            <td>Feed in careful test messages and compare the ciphertext output to hunt for the key</td>
+          </tr>
+        </table>
+
+        <div class="exam">
+          <b>Exam trap:</b> These three are ordered from <i>hardest</i> for the
+          attacker (ciphertext only) to <i>easiest</i> (chosen plaintext) —
+          more access to the system always makes cryptanalysis easier, never
+          harder.
+        </div>
+
+        <p><b>Computational issues — why key/combination size matters so much:</b></p>
+
+        <p>
+          The slides use a padlock as an approachable stand-in for a
+          brute-force attack: try every possible combination until one works.
+        </p>
+
+        <div class="keypoints">
+          <h4>The combination lock math</h4>
+          <ul>
+            <li>3-number combination, numbers 1–40 → 40³ = <b>64,000</b> possible combinations</li>
+            <li>At 10 seconds per attempt → 178 hours total (average case: half that, ≈ 89 hours)</li>
+            <li>Bump it to a 4-number combination (still 1–40, slightly slower to try at 13 sec/attempt) → 40⁴ = <b>2,560,000</b> combinations → 9,244 hours</li>
+          </ul>
+        </div>
+
+        <div class="analogy">
+          <b>The lesson:</b> adding just <i>one more digit</i> to the
+          combination didn't make it 40 times harder to crack in a linear
+          sense — it multiplied the total search space by 40, and the time
+          to crack it grew right along with it. This is exactly why adding a
+          few extra bits to an encryption key can turn "crackable in an
+          afternoon" into "crackable in longer than the age of the universe."
+        </div>
+
+        <div class="analogy">
+          <b>Fundamental Tenet of Cryptography</b> (from the slides): "If lots
+          of smart people have failed to solve a problem, then it probably
+          won't be solved (soon)." This is why algorithms that have survived
+          years of public attack (like AES) are trusted more than something
+          brand new and unreviewed.
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section id="types">
+        <h2><span class="num">03</span> Types of Cryptographic Functions</h2>
+        <p class="tag">The three big families — everything else is a variation on these</p>
+
+        <table class="compare">
+          <tr>
+            <th>Type</th>
+            <th>Keys involved</th>
+            <th>Also called</th>
+          </tr>
+          <tr>
+            <td>Public Key</td>
+            <td>Two keys: public + private</td>
+            <td>Asymmetric cryptography</td>
+          </tr>
+          <tr>
+            <td>Symmetric Key</td>
+            <td>One key, shared between both sides</td>
+            <td>Secret key / conventional cryptography</td>
+          </tr>
+          <tr>
+            <td>Hash Functions</td>
+            <td>No keys at all (or an optional key for a "keyed hash")</td>
+            <td>Message digest functions</td>
+          </tr>
+        </table>
+
+        <div class="exam">
+          <b>Quick way to tell them apart on an exam question:</b> If the
+          question mentions decrypting something back to the original, it's
+          symmetric or public key. If it only ever goes one direction
+          (message → fixed-size fingerprint, no way back), it's a hash.
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section id="secret">
+        <h2><span class="num">04</span> Secret Key (Symmetric) Cryptography</h2>
+        <p class="tag">One shared secret, known to both sides</p>
+
+        <div class="flow">
+          <div class="box">plaintext</div>
+          <div class="arrow">→ encrypt (key K) →</div>
+          <div class="box good">ciphertext</div>
+          <div class="arrow">→ decrypt (same key K) →</div>
+          <div class="box">plaintext</div>
+        </div>
+
+        <p>
+          The same key <code>K</code> both locks and unlocks the message —
+          which is exactly why it must be shared secretly beforehand, and why
+          it's also called "conventional" cryptography (it's the oldest,
+          most intuitive kind).
+        </p>
+
+        <div class="keypoints">
+          <h4>What symmetric keys are used for</h4>
+          <ul>
+            <li><b>Transmission over an insecure channel</b> — sender and receiver share a secret in advance, so eavesdroppers on the wire see only ciphertext</li>
+            <li><b>Secure storage on insecure media</b> — encrypt data before saving it somewhere untrusted (a shared drive, cloud storage, a stolen laptop's disk)</li>
+            <li>
+              <b>Authentication</b> — specifically <i>strong</i> authentication:
+              proving you know the secret key <i>without ever revealing the
+              key itself</i>
+            </li>
+          </ul>
+        </div>
+
+        <p><b>Worked example — challenge/response authentication:</b></p>
+        <p>
+          Alice and Bob both secretly know <code>K<sub>AB</sub> = +3</code>
+          (a Caesar shift). To prove to each other they both know the key
+          without ever saying it out loud:
+        </p>
+
+        <div class="steps">
+          <li>Alice sends Bob a random challenge, <code>r<sub>A</sub> = "marco"</code></li>
+          <li>Bob encrypts it with the shared key and sends it back: <code>"marco"</code> shifted +3 → <code>"pdufr"</code></li>
+          <li>Bob sends his own random challenge back, <code>r<sub>B</sub> = "polo"</code></li>
+          <li>Alice encrypts <i>that</i> with the same key: <code>"polo"</code> shifted +3 → <code>"sror"</code></li>
+          <li>Each side checks the other's response matches what they'd expect — proving both know <code>K<sub>AB</sub></code> without ever transmitting it directly</li>
+        </div>
+
+        <div class="exam">
+          <b>Why the challenge is random each time:</b> If Alice just asked
+          "encrypt the word PASSWORD," an eavesdropper who recorded the reply
+          once could replay it forever. A fresh random challenge every single
+          time means a recorded old answer is useless — this is what "strong
+          authentication" buys you over just checking a static password.
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section id="classical">
+        <h2><span class="num">05</span> Classical Ciphers &amp; Frequency Analysis</h2>
+        <p class="tag">Secret key crypto's simplest ancestors — and why they fall apart</p>
+
+        <table class="compare">
+          <tr>
+            <th>Cipher</th>
+            <th>How it works</th>
+            <th>Example</th>
+          </tr>
+          <tr>
+            <td>Caesar cipher</td>
+            <td>Shift every letter a fixed number of places forward</td>
+            <td>Shift by 3: DOZEN → GRCHQ</td>
+          </tr>
+          <tr>
+            <td>"Secret decoder ring"</td>
+            <td>Same idea, but the shift amount <i>n</i> can be 1–25 instead of always 3</td>
+            <td>Shift by 1: HAL → IBM</td>
+          </tr>
+          <tr>
+            <td>Monoalphabetic cipher</td>
+            <td>Any arbitrary letter-for-letter mapping, not just a simple shift</td>
+            <td>26! ≈ 4.03 × 10²⁶ possible mappings</td>
+          </tr>
+          <tr>
+            <td>Polyalphabetic cipher (e.g. Vigenère)</td>
+            <td>The <i>same</i> plaintext letter can map to <i>different</i> ciphertext letters depending on position, using a repeating keyword</td>
+            <td>Plaintext GEEKS + key FIRST → different letters, shifted by a different amount each position</td>
+          </tr>
+        </table>
+
+        <div class="exam">
+          <b>The huge key space trap:</b> 26! looks unbreakable — at 1
+          millisecond per guess, brute-forcing every mapping would take
+          about 10 million years. So why is monoalphabetic substitution
+          actually <i>weak</i>? Because you don't need to brute-force the
+          key at all — you can use <b>letter frequency analysis</b> instead.
+        </div>
+
+        <div class="analogy">
+          <b>Frequency analysis, explained simply:</b> In normal English
+          text, "E" shows up about 12.7% of the time, "T" about 9%, while "Z"
+          and "Q" barely appear at all. If a monoalphabetic-enciphered
+          message has one symbol appearing constantly, it's very likely
+          standing in for "E." You don't crack the whole key at once — you
+          guess letter by letter based on how common each symbol is, then
+          use context to fill in gaps. It turns an astronomical brute-force
+          problem into an educated-guessing problem.
+        </div>
+
+        <div class="keypoints">
+          <h4>Why polyalphabetic (Vigenère) ciphers resist frequency analysis better</h4>
+          <ul>
+            <li>Because one plaintext letter can turn into several different ciphertext letters depending on where it sits in the message, the neat one-symbol-equals-one-letter frequency pattern gets smeared out</li>
+            <li>This is exactly the question the slides pose: "Can frequency analysis work here?" — the honest exam answer is: <i>not directly</i>, it's much harder, though patterns can still leak if the keyword repeats and the message is long enough (a fact worth mentioning if the exam asks you to elaborate)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section id="public">
+        <h2><span class="num">06</span> Public Key Cryptography</h2>
+        <p class="tag">Two keys instead of one — no secret needs to be shared in advance</p>
+
+        <div class="flow">
+          <div class="box">plaintext</div>
+          <div class="arrow">→ encrypt (public key) →</div>
+          <div class="box good">ciphertext</div>
+          <div class="arrow">→ decrypt (private key) →</div>
+          <div class="box">plaintext</div>
+        </div>
+
+        <div class="keypoints">
+          <h4>The two keys, and how they differ from "secret key"</h4>
+          <ul>
+            <li><b>Public key:</b> published, ideally known as widely as possible — anyone can use it to encrypt a message <i>to</i> you</li>
+            <li><b>Private key:</b> kept by you alone, never published — note the slides are careful to call it "private key," <i>not</i> "secret key," to avoid confusing it with symmetric crypto's shared secret</li>
+          </ul>
+        </div>
+
+        <div class="analogy">
+          <b>Think of it as a mailbox with a slot:</b> anyone (Bob) can drop a
+          letter through the public slot (encrypt with Alice's public key),
+          but only Alice, who holds the one physical key to the box
+          (private key), can open it and read what's inside.
+        </div>
+
+        <div class="exam">
+          <b>Efficiency problem — very testable:</b> Public key algorithms are
+          orders of magnitude <i>slower</i> than symmetric key algorithms.
+          Nobody encrypts a whole large file or video stream with pure public
+          key crypto — it's used briefly to set things up, then handed off.
+        </div>
+
+        <p><b>The hybrid model (the practical fix for that slowness):</b></p>
+        <div class="steps">
+          <li>Use public key crypto just once, briefly, to establish a temporary shared symmetric key</li>
+          <li>Switch to that fast symmetric key for the rest of the actual communication</li>
+        </div>
+
+        <p><b>Secure storage on insecure media — two documented options:</b></p>
+        <table class="compare">
+          <tr>
+            <th>Option</th>
+            <th>How it works</th>
+          </tr>
+          <tr>
+            <td>Option 1</td>
+            <td>Encrypt the data directly with the public key; decrypt later with the private key</td>
+          </tr>
+          <tr>
+            <td>Option 2 (the hybrid approach)</td>
+            <td>Generate a random symmetric secret key, encrypt the actual data with that (fast), then encrypt just the small secret key itself with the public key</td>
+          </tr>
+        </table>
+
+        <div class="exam">
+          <b>Why Option 2 usually wins in practice:</b> You get the speed of
+          symmetric encryption for the (potentially large) data, and public
+          key crypto only has to do its slow work on one tiny key instead of
+          the whole file.
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section id="hash">
+        <h2><span class="num">07</span> Hash Algorithms</h2>
+        <p class="tag">Message digests — one-way, no key required</p>
+
+        <p>
+          A hash function takes a message of any length and produces a
+          fixed-size fingerprint (the <b>digest</b>). It's designed to be a
+          one-way street — you can go from message to digest easily, but
+          never back the other way.
+        </p>
+
+        <div class="keypoints">
+          <h4>The four required properties (memorize these)</h4>
+          <ul>
+            <li>Easy to compute the hash for any given message</li>
+            <li><b>Infeasible</b> to find a message that produces a given hash (one-wayness / preimage resistance)</li>
+            <li><b>Infeasible</b> to modify a message without changing its hash</li>
+            <li><b>Infeasible</b> to find two different messages with the same hash (collision resistance)</li>
+          </ul>
+        </div>
+
+        <div class="analogy">
+          <b>The slide's own demo makes the point well:</b> changing just one
+          letter in "The red fox jumps over the blue dog" (e.g. swapping two
+          letters in "over") produces a completely different, unrelated-looking
+          digest each time — there's no partial credit. A tiny change in the
+          input scrambles the whole output ("avalanche effect").
+        </div>
+
+        <div class="exam">
+          <b>Hash lifecycle — algorithms get retired:</b> The slides show a
+          "breakout chart" where older hash functions (Snefru, MD4, MD5, SHA-0)
+          turn red over time as collisions or weaknesses were found in them.
+          The exam-relevant point: no hash algorithm is safe forever — what's
+          considered secure shifts as cryptanalysis improves, which is why
+          MD5 is now considered broken for security purposes even though it's
+          still used for basic (non-adversarial) integrity checks.
+        </div>
+
+        <p><b>Password hashing:</b></p>
+        <div class="keypoints">
+          <h4>How it's supposed to work</h4>
+          <ul>
+            <li>Systems store only the <b>hash</b> of your password, never the password itself</li>
+            <li>At login, your typed password is hashed again and compared to the stored hash</li>
+            <li>Even so, passwords can still be <b>guessed</b> via dictionary attacks — hashing protects against reversing the hash, not against someone hashing common passwords and comparing results (which is exactly what happened in the LinkedIn breach referenced in the slides)</li>
+          </ul>
+        </div>
+
+        <p><b>Message integrity — the keyed hash:</b></p>
+        <p>
+          Alice and Bob share a secret. Alice hashes (message + secret)
+          together and sends both the message and that hash. Bob recomputes
+          the same hash using the message he received plus the shared
+          secret, and checks whether it matches.
+        </p>
+
+        <div class="exam">
+          <b>Why this proves integrity:</b> If anyone tampered with the
+          message in transit, Bob's recomputed hash won't match the one
+          Alice sent — and an attacker can't forge a matching hash without
+          knowing the shared secret.
+        </div>
+
+        <p><b>Digital signatures — hashing meets public key crypto:</b></p>
+        <div class="flow">
+          <div class="box">plaintext</div>
+          <div class="arrow">→ sign (private key) →</div>
+          <div class="box good">signed message</div>
+          <div class="arrow">→ verify (public key) →</div>
+          <div class="box">plaintext</div>
+        </div>
+
+        <div class="keypoints">
+          <h4>Two properties this asymmetry buys you</h4>
+          <ul>
+            <li>A signature can only be <b>generated</b> by whoever holds the private key</li>
+            <li>A signature can be <b>verified</b> by absolutely anyone, using the public key</li>
+            <li><b>Non-repudiation:</b> the sender can't credibly claim they never sent it — the flip side/caveat is that this only holds if the private key itself was never stolen</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 8 recap -->
+      <section class="recap" id="recap">
+        <h2>One-Page Recap</h2>
+        <ul>
+          <li>
+            <b>Cryptography:</b> mangling information (plaintext → ciphertext)
+            in a way that allows secret unmangling. Public algorithm, secret
+            key — never the reverse.
+          </li>
+          <li>
+            <b>Breaking a scheme:</b> ciphertext-only (hardest for attacker) →
+            known-plaintext → chosen-plaintext (easiest). Bigger key/combination
+            space grows crack-time exponentially, not linearly.
+          </li>
+          <li>
+            <b>Three function families:</b> public key (two keys), symmetric
+            key (one shared key), hash functions (no key, one-way).
+          </li>
+          <li>
+            <b>Symmetric key:</b> same key encrypts and decrypts; used for
+            insecure-channel transmission, insecure-media storage, and
+            challenge–response authentication (never send the key itself).
+          </li>
+          <li>
+            <b>Classical ciphers:</b> Caesar/monoalphabetic ciphers fall to
+            <b>frequency analysis</b> even with a huge key space; polyalphabetic
+            (Vigenère) resists this better by varying the mapping per position.
+          </li>
+          <li>
+            <b>Public key:</b> public key encrypts, private key decrypts.
+            Much slower than symmetric — real systems use a
+            <b>hybrid model</b> (public key sets up a fast symmetric session
+            key).
+          </li>
+          <li>
+            <b>Hash functions:</b> one-way fingerprints. Used for password
+            storage (still guessable via dictionary attack), keyed-hash
+            message integrity, and — combined with private-key signing —
+            digital signatures with non-repudiation.
+          </li>
+        </ul>
+
+        <div class="quiz">
+          <p class="q">Q: Is it a problem if the encryption algorithm itself is public?</p>
+          <p class="a">A: No — it's actually preferred ("sunlight is the best disinfectant"). Only the key must stay secret.</p>
+
+          <p class="q">Q: Rank the three attack types from hardest to easiest for the attacker.</p>
+          <p class="a">A: Ciphertext-only (hardest) → known-plaintext → chosen-plaintext (easiest).</p>
+
+          <p class="q">Q: Why does frequency analysis break a monoalphabetic cipher despite 26! possible keys?</p>
+          <p class="a">A: Because it doesn't need to search the key space at all — it exploits how often each letter naturally occurs in English to guess the mapping directly.</p>
+
+          <p class="q">Q: Why is public key crypto usually paired with a symmetric key in real systems?</p>
+          <p class="a">A: Public key algorithms are far slower; the hybrid model uses public key crypto only to set up a fast shared symmetric key for the rest of the session.</p>
+
+          <p class="q">Q: What's the difference between a digital signature's "verify" step and message-integrity's keyed hash?</p>
+          <p class="a">A: A keyed hash needs both sides to already share a secret. A digital signature uses asymmetric keys, so <i>anyone</i> can verify it with the signer's public key — and it adds non-repudiation.</p>
+
+          <p class="q">Q: Does hashing a password make it unguessable?</p>
+          <p class="a">A: No — it prevents reversing the hash back to the password, but dictionary/guessing attacks can still succeed by hashing common passwords and comparing.</p>
+        </div>
+      </section>
+
+      <footer>
+        Good luck on your exam — you've got this. Review the recap box one more
+        time right before you walk in.
+      </footer>
+    </div>
+  </body>
+</html>

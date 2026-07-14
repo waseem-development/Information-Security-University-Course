@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Information Security Introduction — Exam Study Guide</title>
+    <style>
+      :root {
+        --ink: #1b2430;
+        --paper: #f6f4ee;
+        --panel: #ffffff;
+        --seal-red: #a6392b;
+        --seal-gold: #c99a3d;
+        --line: #d8d2c2;
+        --accent: #2f5d5a;
+        --muted: #6b6459;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        line-height: 1.6;
+        padding: 0 0 80px 0;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* header / wax seal banner */
+      header.hero {
+        background: linear-gradient(180deg, var(--ink), #232d3a);
+        color: #f1ede2;
+        padding: 46px 28px 54px;
+        position: relative;
+        overflow: hidden;
+      }
+      header.hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 40px
+        );
+      }
+      .hero-inner {
+        max-width: 880px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .eyebrow {
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12px;
+        color: #c9b98a;
+        margin-bottom: 14px;
+      }
+      h1.title {
+        font-size: 42px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+      .hero-sub {
+        color: #c7c2b4;
+        font-size: 17px;
+        max-width: 600px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      .seal {
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #d9ac54,
+          var(--seal-gold) 60%,
+          #93711f 100%
+        );
+        box-shadow:
+          0 8px 18px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 3px rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3a2a06;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-align: center;
+      }
+
+      nav.toc {
+        background: var(--panel);
+        margin: -30px 28px 40px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 20px 24px;
+        max-width: 824px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      nav.toc h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        margin: 0 0 10px 0;
+        font-weight: 700;
+      }
+      nav.toc ol {
+        margin: 0;
+        padding-left: 20px;
+        columns: 2;
+        column-gap: 30px;
+        font-size: 14.5px;
+      }
+      nav.toc li {
+        margin-bottom: 6px;
+      }
+      nav.toc a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      nav.toc a:hover {
+        text-decoration: underline;
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        margin: 0 0 26px 0;
+        padding: 30px 34px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      section h2 {
+        font-size: 26px;
+        margin: 0 0 4px 0;
+        color: var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      section h2 .num {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13px;
+        color: var(--seal-red);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      .tag {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 0 0 18px 0;
+        font-style: italic;
+      }
+
+      .analogy {
+        background: #f1ede1;
+        border-left: 4px solid var(--seal-gold);
+        padding: 14px 18px;
+        border-radius: 2px;
+        margin: 16px 0;
+        font-size: 15.5px;
+      }
+      .analogy b {
+        color: var(--seal-red);
+      }
+
+      .keypoints {
+        background: #eef2ee;
+        border: 1px dashed var(--accent);
+        border-radius: 4px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .keypoints h4 {
+        margin: 0 0 8px 0;
+        color: var(--accent);
+        font-size: 12.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .keypoints ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .keypoints li {
+        margin-bottom: 5px;
+      }
+
+      .exam {
+        background: #2f2622;
+        color: #f4ecd8;
+        border-radius: 4px;
+        padding: 14px 20px;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      .exam b {
+        color: var(--seal-gold);
+      }
+
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 13.5px;
+      }
+      .flow .box {
+        background: #fff;
+        border: 1.5px solid var(--ink);
+        border-radius: 4px;
+        padding: 10px 14px;
+        min-width: 120px;
+        text-align: center;
+      }
+      .flow .arrow {
+        font-size: 18px;
+        color: var(--seal-red);
+      }
+      .flow .box.bad {
+        border-color: var(--seal-red);
+        background: #fbeceb;
+      }
+      .flow .box.good {
+        border-color: var(--accent);
+        background: #eaf1ee;
+      }
+
+      table.compare {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      }
+      table.compare th {
+        background: var(--ink);
+        color: #f4ecd8;
+        text-align: left;
+        padding: 9px 12px;
+      }
+      table.compare td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      table.compare tr:nth-child(even) td {
+        background: #faf8f2;
+      }
+
+      .steps {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0;
+      }
+      .steps li {
+        counter-increment: step;
+        position: relative;
+        padding: 8px 0 8px 44px;
+        border-bottom: 1px solid var(--line);
+        font-size: 15px;
+      }
+      .steps li:last-child {
+        border-bottom: none;
+      }
+      .steps li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 28px;
+        height: 28px;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .recap {
+        background: linear-gradient(180deg, #fbf7ec, #f4ecd8);
+        border: 1px solid var(--seal-gold);
+        border-radius: 4px;
+        padding: 22px 26px;
+        font-size: 15px;
+      }
+      .recap h2 {
+        color: var(--seal-red);
+      }
+
+      .quiz {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 14.5px;
+      }
+      .quiz .q {
+        font-weight: 700;
+        margin-top: 14px;
+      }
+      .quiz .a {
+        color: var(--accent);
+        margin: 4px 0 0 0;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
+        margin-top: 20px;
+      }
+
+      code,
+      .kv {
+        font-family: "SFMono-Regular", Consolas, monospace;
+        background: #eee8d8;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 640px) {
+        h1.title {
+          font-size: 30px;
+        }
+        section {
+          padding: 22px 20px;
+        }
+        nav.toc ol {
+          columns: 1;
+        }
+        .seal {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">InfoSec Exam Prep</div>
+        <h1 class="title">Information Security — Introduction</h1>
+        <p class="hero-sub">
+          The plain-English version: what we're actually protecting, what's
+          out to get it, and why it matters more than it looks like it does.
+        </p>
+        <div class="seal">CIA<br />TRIAD</div>
+      </div>
+    </header>
+<br><br><br>
+    <div class="wrap">
+      <nav class="toc">
+        <h2>Jump to a section</h2>
+        <ol>
+          <li><a href="#what">1. What Is Information Security?</a></li>
+          <li><a href="#malware">2. Malware — The Umbrella Term</a></li>
+          <li><a href="#threats">3. The Named Threats</a></li>
+          <li><a href="#ransomware">4. Ransomware</a></li>
+          <li><a href="#keylogging">5. Keystroke Logging</a></li>
+          <li><a href="#why">6. Why Is It Important?</a></li>
+          <li><a href="#do">7. What Can We Do?</a></li>
+          <li><a href="#recap">8. One-Page Recap + Self-Test</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1 -->
+      <section id="what">
+        <h2><span class="num">01</span> What Is Information Security?</h2>
+        <p class="tag">The official definition and the CIA Triad</p>
+
+        <p>
+          Information Security (InfoSec) deals with several different
+          "trust" aspects of information and how to protect them. The exact
+          definition, straight from the U.S. Government's Committee on
+          National Security Systems, is worth memorizing:
+        </p>
+
+        <div class="analogy">
+          <b>CNSS (2010) definition:</b> "The protection of information and
+          information systems from unauthorized access, use, disclosure,
+          disruption, modification, or destruction in order to provide
+          confidentiality, integrity, and availability."
+        </div>
+
+        <p>
+          Notice the definition ends by naming exactly three goals — this is
+          the famous <b>CIA Triad</b>, the single most testable idea in this
+          whole chapter:
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Element</th>
+            <th>What it actually means</th>
+          </tr>
+          <tr>
+            <td>Confidentiality</td>
+            <td>Only people who are supposed to see the data can see it</td>
+          </tr>
+          <tr>
+            <td>Integrity</td>
+            <td>The data hasn't been altered, whether by accident or on purpose</td>
+          </tr>
+          <tr>
+            <td>Availability (Recoverability)</td>
+            <td>The data/system is there and working when authorized people need it — and can be recovered if something goes wrong</td>
+          </tr>
+        </table>
+
+        <div class="analogy">
+          <b>Think of it like a bank vault:</b> Confidentiality is the locked
+          door (only authorized people get in). Integrity is a tamper-proof
+          seal on the money bags (no one quietly swapped the contents).
+          Availability is the vault actually opening on schedule for the
+          teller who legitimately needs cash for a customer — a vault that's
+          "secure" but permanently jammed shut has failed just as badly as
+          one that was robbed.
+        </div>
+
+        <div class="keypoints">
+          <h4>Don't forget: security isn't only digital</h4>
+          <ul>
+            <li>InfoSec includes <b>Physical Security</b> (locked doors, guarded server rooms) just as much as electronic/cyber security</li>
+            <li>The slide's diagram frames it as a layered system: Information sits at the center (C/I/A), surrounded by Hardware/Software/Communications, then wrapped in Products (Physical Security), People (Personnel Security), and Procedures (Organizational Security)</li>
+          </ul>
+        </div>
+
+        <div class="exam">
+          <b>Common exam trap:</b> Don't answer "confidentiality" when a
+          question is really describing data being <i>corrupted</i> — that's
+          integrity. And don't answer "confidentiality" for a system being
+          knocked offline — that's availability. Match the scenario to the
+          exact letter of the triad it violates.
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section id="malware">
+        <h2><span class="num">02</span> Malware — The Umbrella Term</h2>
+        <p class="tag">One word that covers almost everything else in this chapter</p>
+
+        <div class="analogy">
+          <b>Definition:</b> "Malicious" + "software" = malware — hostile,
+          intrusive, or annoying software or program code. It includes
+          viruses, worms, trojan horses, bots, spyware, adware, and more.
+        </div>
+
+        <div class="exam">
+          <b>Exam-critical distinction:</b> Whether something counts as
+          malware depends on the <b>intent of the creator</b>, not on any
+          specific technical feature. The exact same piece of tracking code
+          could be "legitimate analytics" in one context and "malware" in
+          another — what makes it malware is that it's doing something
+          hostile, intrusive, or unwanted from the user's perspective.
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section id="threats">
+        <h2><span class="num">03</span> The Named Threats</h2>
+        <p class="tag">Bots, adware, spyware, spam, and phishing — know what separates each one</p>
+
+        <table class="compare">
+          <tr>
+            <th>Term</th>
+            <th>What it is</th>
+            <th>Key detail to remember</th>
+          </tr>
+          <tr>
+            <td>Internet bot</td>
+            <td>An automated application controlled by a software agent that interacts with services meant for people</td>
+            <td>A <b>botnet</b> is a network of "zombie" computers doing automated tasks like spamming — bots aren't always malicious (e.g. a game bot), but botnets usually are</td>
+          </tr>
+          <tr>
+            <td>Adware</td>
+            <td>Software that automatically plays/displays/downloads ads on your computer</td>
+            <td>Often bundled into free software as a way to recover development costs through ad revenue — the intent is commercial, not necessarily malicious</td>
+          </tr>
+          <tr>
+            <td>Spyware</td>
+            <td>Software that intercepts or partially controls a computer without informed consent</td>
+            <td>Watches what you do and sends that info elsewhere — can log visited sites, capture typed passwords/credit card numbers, and trigger pop-up ads. Many legitimate companies bundle spyware-like tracking as a form of adware</td>
+          </tr>
+          <tr>
+            <td>Spam</td>
+            <td>Abuse of electronic messaging to send unsolicited, undesired bulk messages</td>
+            <td>Email is the most recognized form, but it also spreads through IM, Usenet, search engines, blogs, and mobile messaging</td>
+          </tr>
+          <tr>
+            <td>Phishing</td>
+            <td>Social engineering used to acquire sensitive data (passwords, credit card info) by pretending to be a trustworthy party</td>
+            <td>Typically delivered via email or instant message — the classic example is a fake "your bank" email with a link to a look-alike site</td>
+          </tr>
+        </table>
+
+        <div class="analogy">
+          <b>The classic phishing tell:</b> the slide's TrustedBank example
+          email looks legitimate, but the link actually points to a "bad" IP
+          address rather than the bank's real domain. Always check where a
+          link <i>actually</i> goes, not just what text is displayed.
+        </div>
+
+        <div class="exam">
+          <b>Exam trap — bots vs. botnets vs. spyware vs. adware:</b> These
+          four get mixed up constantly. The quick test: does it <i>watch and
+          report</i> on you (spyware)? Does it just <i>show ads</i> (adware)?
+          Does it <i>act autonomously</i> doing tasks (bot)? Is it a whole
+          <i>network</i> of compromised machines (botnet)? Match the
+          behavior described in the question to exactly one of these.
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section id="ransomware">
+        <h2><span class="num">04</span> Ransomware</h2>
+        <p class="tag">The threat that attacks Availability directly</p>
+
+        <p>
+          Ransomware encrypts a victim's data and demands payment
+          (a "ransom") to restore access. The slide statistics make three
+          points worth remembering:
+        </p>
+
+        <div class="keypoints">
+          <h4>Numbers worth remembering</h4>
+          <ul>
+            <li>Government organizations were the most-affected sector in North America (15.4% of reported ransom attacks), followed by manufacturing and construction</li>
+            <li>Reporting rates vary enormously by country — from 88% of organizations in Saudi Arabia down to 38% in Japan</li>
+            <li>99% of victims whose data was encrypted got <i>some</i> data back — but the <b>#1 method</b> of recovery was <b>backups</b>, not paying the ransom</li>
+            <li>Only 46% of victims actually paid the ransom, and of those, just 4% got <i>all</i> their data back (61% was restored on average)</li>
+          </ul>
+        </div>
+
+        <div class="exam">
+          <b>Exam-relevant takeaway:</b> Paying the ransom is neither
+          guaranteed nor the primary way organizations actually recover —
+          good backups matter more. This ties directly back to the
+          <b>Availability</b> leg of the CIA Triad: ransomware's whole attack
+          is making your own data unavailable to you.
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section id="keylogging">
+        <h2><span class="num">05</span> Keystroke Logging</h2>
+        <p class="tag">A tool that's dual-use — legitimate and malicious</p>
+
+        <p>
+          Keystroke logging (keylogging) captures a user's keystrokes. It
+          originated as a diagnostic tool in software development, but the
+          same capability is exactly what makes it dangerous in the wrong
+          hands.
+        </p>
+
+        <table class="compare">
+          <tr>
+            <th>Legitimate uses</th>
+            <th>Malicious uses</th>
+          </tr>
+          <tr>
+            <td>Finding sources of error in software during development</td>
+            <td>Capturing passwords or encryption keys, bypassing other security measures entirely</td>
+          </tr>
+          <tr>
+            <td>Measuring employee productivity on clerical tasks</td>
+            <td>Espionage / unauthorized surveillance of a user</td>
+          </tr>
+          <tr>
+            <td>Law enforcement (with proper authorization)</td>
+            <td>Widely available online, so anyone can repurpose the same tool</td>
+          </tr>
+        </table>
+
+        <div class="keypoints">
+          <h4>Two delivery mechanisms</h4>
+          <ul>
+            <li>
+              <b>Hardware keyloggers</b> — three types: an inline device
+              attached to the keyboard cable, a device installed inside a
+              standard keyboard, or a keyboard with the logger built in from
+              the factory
+            </li>
+            <li>
+              <b>Software keyloggers</b> — trivial to write, and can be
+              distributed as malware (virus, trojan, etc.) just like any
+              other program
+            </li>
+          </ul>
+        </div>
+
+        <div class="exam">
+          <b>Exam trap:</b> Don't assume keylogging is inherently
+          "malware" — the technology itself is neutral (used legitimately in
+          QA and productivity measurement). Just like the malware definition
+          in Section 2, what makes a specific keylogger malicious is
+          <i>how and why</i> it was deployed, not the mechanism itself.
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section id="why">
+        <h2><span class="num">06</span> Why Is It Important?</h2>
+        <p class="tag">The threat landscape shifted, and it costs real money</p>
+
+        <div class="keypoints">
+          <h4>The landscape shift (memorize this framing)</h4>
+          <ul>
+            <li>Traditional malware threats hit an apparent wall around 2005</li>
+            <li>New threats — bots, spam, phishing — stepped into that void instead of threats disappearing</li>
+          </ul>
+        </div>
+
+        <p><b>How each threat maps back onto the CIA Triad:</b></p>
+        <table class="compare">
+          <tr>
+            <th>Triad element</th>
+            <th>How it gets attacked</th>
+          </tr>
+          <tr>
+            <td>Confidentiality</td>
+            <td>Unauthorized access via malware/spyware limits our ability to protect data confidentiality</td>
+          </tr>
+          <tr>
+            <td>Integrity</td>
+            <td>Malicious programs can alter data values, destroying data integrity</td>
+          </tr>
+          <tr>
+            <td>Availability</td>
+            <td>Denial of Service (DoS) attacks can shut down a server/network, making the system unavailable</td>
+          </tr>
+        </table>
+
+        <div class="exam">
+          <b>Numbers cited in the slides — plausible exam fill-in-the-blanks:</b>
+          <ul style="margin: 8px 0 0 18px">
+            <li>Over eight million phishing attempts per day, on average, during the latter half of 2005 (Symantec)</li>
+            <li>Spam cost U.S. organizations more than $10 billion in 2004 (California legislature), including lost productivity and the extra equipment/software/manpower needed to fight it</li>
+          </ul>
+        </div>
+
+        <p><b>Regulatory drivers — why this isn't optional for many organizations:</b></p>
+        <table class="compare">
+          <tr>
+            <th>Regulation</th>
+            <th>What it covers</th>
+          </tr>
+          <tr>
+            <td>HIPAA</td>
+            <td>Protection of electronic personal identifiable health information</td>
+          </tr>
+          <tr>
+            <td>Sarbanes-Oxley Act</td>
+            <td>Federal securities law focused on data accuracy and integrity</td>
+          </tr>
+          <tr>
+            <td>PCI Security</td>
+            <td>Payment Card Industry security measures for handling card data</td>
+          </tr>
+        </table>
+
+        <div class="keypoints">
+          <h4>Growing/emerging concerns named in the slides</h4>
+          <ul>
+            <li>Liability for damage caused by botnets</li>
+            <li>Loss of confidential corporate information (financials, personnel data)</li>
+            <li>Electronic blackmail</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section id="do">
+        <h2><span class="num">07</span> What Can We Do?</h2>
+        <p class="tag">Three named strategies — assessment, application, awareness</p>
+
+        <div class="steps">
+          <li>
+            <b>Security Assessment</b> — identify areas of risk, identify
+            potential for security breaches/collapses, identify concrete
+            steps to mitigate them
+          </li>
+          <li>
+            <b>Security Application</b> — apply expert knowledge (train
+            staff, hire experts, or both); use a <b>multi-layered
+            approach</b> since there is no single solution; put real
+            policies and procedures in place
+          </li>
+          <li>
+            <b>Security Awareness</b> — not just for "the geeks": training at
+            all levels of the organization (external and/or internal),
+            continuing education (not a one-time event), and making it part
+            of the organization's culture
+          </li>
+        </div>
+
+        <div class="analogy">
+          <b>"Multi-layered approach" explained:</b> think of airport
+          security — there's no single checkpoint that catches everything.
+          ID check, bag scan, metal detector, and behavioral observation each
+          catch different things. InfoSec works the same way: firewalls,
+          training, patching, and policy all catch different failure modes,
+          and none of them alone is sufficient.
+        </div>
+      </section>
+
+      <!-- 8 recap -->
+      <section class="recap" id="recap">
+        <h2>One-Page Recap</h2>
+        <ul>
+          <li>
+            <b>InfoSec's job:</b> protect information/systems from
+            unauthorized access, use, disclosure, disruption, modification,
+            or destruction — in order to provide the <b>CIA Triad</b>:
+            Confidentiality, Integrity, Availability.
+          </li>
+          <li>
+            <b>Security is layered:</b> physical security (Products), people
+            (Personnel/Procedures), and electronic/cyber security all matter
+            together.
+          </li>
+          <li>
+            <b>Malware</b> is defined by the creator's <i>intent</i>, not a
+            specific feature — it's the umbrella term over viruses, worms,
+            trojans, bots, spyware, and adware.
+          </li>
+          <li>
+            <b>Threat vocabulary:</b> bots/botnets (automated tasks at
+            scale), adware (unwanted ads), spyware (covert monitoring), spam
+            (unsolicited bulk messaging), phishing (social-engineered
+            credential theft).
+          </li>
+          <li>
+            <b>Ransomware</b> attacks Availability directly; backups — not
+            paying the ransom — are the #1 real-world recovery method.
+          </li>
+          <li>
+            <b>Keylogging</b> is dual-use: legitimate in QA/productivity
+            measurement and law enforcement, but the exact same mechanism
+            enables password/key theft when used maliciously.
+          </li>
+          <li>
+            <b>Why it matters:</b> real financial cost (billions in
+            spam-related losses alone), regulatory pressure (HIPAA,
+            Sarbanes-Oxley, PCI), and growing risks like botnet liability and
+            electronic blackmail.
+          </li>
+          <li>
+            <b>Response strategy:</b> Assessment → Application (multi-layered,
+            policy-backed) → Awareness (ongoing, cultural, for everyone).
+          </li>
+          <li>
+            <b>Key takeaway line from the slides:</b> "Failure to Secure is
+            an Opportunity to Fail."
+          </li>
+        </ul>
+
+        <div class="quiz">
+          <p class="q">Q: What are the three elements of the CIA Triad?</p>
+          <p class="a">A: Confidentiality, Integrity, and Availability (Recoverability).</p>
+
+          <p class="q">Q: A DoS attack that takes a server offline violates which part of the CIA Triad?</p>
+          <p class="a">A: Availability.</p>
+
+          <p class="q">Q: What determines whether software counts as "malware"?</p>
+          <p class="a">A: The intent of the creator, not any specific technical feature.</p>
+
+          <p class="q">Q: What is a botnet?</p>
+          <p class="a">A: A network of "zombie" computers used to carry out automated tasks such as spamming.</p>
+
+          <p class="q">Q: According to the ransomware statistics, what was the #1 method organizations used to recover encrypted data?</p>
+          <p class="a">A: Backups — not paying the ransom.</p>
+
+          <p class="q">Q: Name the three regulatory drivers of InfoSec mentioned in the slides.</p>
+          <p class="a">A: HIPAA, the Sarbanes-Oxley Act, and PCI Security.</p>
+
+          <p class="q">Q: Why is a "multi-layered approach" emphasized for Security Application?</p>
+          <p class="a">A: Because there is no single solution — different layers (technical, procedural, human) catch different kinds of failures.</p>
+        </div>
+      </section>
+
+      <footer>
+        Good luck on your exam — you've got this. Review the recap box one more
+        time right before you walk in.
+      </footer>
+    </div>
+  </body>
+</html>
