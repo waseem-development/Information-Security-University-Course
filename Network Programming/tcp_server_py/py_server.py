@@ -1,5 +1,5 @@
-import socket
-import threading
+import socket as stk
+import threading as th
 
 HOST = '127.0.0.1'
 PORT = 8080
@@ -32,18 +32,21 @@ def handle_client(conn, addr):
             except:
                 break
 
-    threading.Thread(target=receive, daemon=True).start()
-    threading.Thread(target=send, daemon=True).start()
+    th.Thread(target=receive, daemon=True).start()
+    th.Thread(target=send, daemon=True).start()
 
 def main():
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server = stk.socket(stk.AF_INET, stk.SOCK_STREAM)
+    server.setsockopt(
+        stk.SOL_SOCKET, 
+        stk.SO_REUSEADDR, 
+        1)
     server.bind((HOST, PORT))
     server.listen()
     print("Server running...")
     while True:
         conn, addr = server.accept()
-        t = threading.Thread(target=handle_client, args=(conn, addr), daemon=True)
+        t = th.Thread(target=handle_client, args=(conn, addr), daemon=True)
         t.start()
 
 main()

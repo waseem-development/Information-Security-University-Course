@@ -1,5 +1,5 @@
 import socket as stk
-import threading
+import threading as th
 import time
 
 HOST = '127.0.0.1'
@@ -32,9 +32,9 @@ s.connect((HOST, PORT))
 print("Connected!")
 
 # Step 3: Recieve Message
-threading.Thread(target=receive_message, args=(s,), daemon=True).start()
+th.Thread(target=receive_message, args=(s,), daemon=True).start()
 
 # Step 4: Send Message
-threading.Thread(target=send_message, args=(s,), daemon=True).start()
+th.Thread(target=send_message, args=(s,), daemon=True).start()
 while True:
     time.sleep(1)
