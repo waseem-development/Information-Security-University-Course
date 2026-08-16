@@ -17,7 +17,7 @@ with skt.socket(skt.AF_INET, skt.SOCK_DGRAM) as s:
         # Send to server
         s.sendto(message.encode("utf-8"), SERVER)
 
-        if message.lower() == "exit":
+        if message.lower().strip() == "exit":
             print("Client ended chat.")
             break
 

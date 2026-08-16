@@ -19,7 +19,7 @@ with skt.socket(skt.AF_INET, skt.SOCK_DGRAM) as s:
 
             print(f"\nClient {addr[0]}:{addr[1]} says: {msg}")
 
-            if msg.lower() == "exit":
+            if msg.lower().strip() == "exit":
                 print("Client ended chat.")
                 break
 
