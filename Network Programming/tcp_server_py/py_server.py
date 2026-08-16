@@ -36,17 +36,26 @@ def handle_client(conn, addr):
     th.Thread(target=send, daemon=True).start()
 
 def main():
-    server = stk.socket(stk.AF_INET, stk.SOCK_STREAM)
-    server.setsockopt(
-        stk.SOL_SOCKET, 
-        stk.SO_REUSEADDR, 
+    server = stk.socket(stk.AF_INET, stk.SOCK_STREAM) # AF_INET: IPv4, SOCK_STREAM: TCP
+    server.setsockopt( # Configure this socket so that its address can be reused when appropriate.
+        stk.SOL_SOCKET, # I wanna configure an option at the socket level
+        stk.SO_REUSEADDR, # allow the socets local address to the resued when the operating syste would otherwise prevent the bind because of a recently used socket
         1)
-    server.bind((HOST, PORT))
-    server.listen()
+    
+    server.bind((HOST, PORT)) # This socket should use this IP address and port.
+
+    server.listen() # Now start waiting for incoming TCP connection requests.
+
     print("Server running...")
+
     while True:
-        conn, addr = server.accept()
-        t = th.Thread(target=handle_client, args=(conn, addr), daemon=True)
+        conn, addr = server.accept() # where conn is a new socket used to communicate with that client
+        # address is the client's address
+        t = th.Thread(
+            target=handle_client, # This new thread's job is to execute handle_client.
+            args=(conn, addr),  # When the thread runs handle_client, pass it these two arguments.
+            daemon=True # means this client-handling thread is a daemon/background thread.
+            )
         t.start()
 
 main()
