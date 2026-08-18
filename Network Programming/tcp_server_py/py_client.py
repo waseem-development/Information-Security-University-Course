@@ -14,7 +14,6 @@ def receive_message(sock):
             print("\nServer:", data.decode('utf-8'))
         except:
             break
-
 def send_message(sock):
     while True:
         message = input("You: ")
@@ -22,15 +21,11 @@ def send_message(sock):
 
         if message == "exit":
             break
-
 # Step 1: Create Socket
 s = stk.socket(stk.AF_INET, stk.SOCK_STREAM)
-
 # Step 2: Connect to server by performing 3 way handshake
 s.connect((HOST, PORT))
-
 print("Connected!")
-
 # Step 3: Recieve Message
 th.Thread(target=receive_message, args=(s,), daemon=True).start()
 
@@ -38,3 +33,4 @@ th.Thread(target=receive_message, args=(s,), daemon=True).start()
 th.Thread(target=send_message, args=(s,), daemon=True).start()
 while True:
     time.sleep(1)
+    
